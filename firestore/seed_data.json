@@ -1,0 +1,80 @@
+{
+  "users": [
+    {
+      "id": "user_demo_001",
+      "name": "Demo User",
+      "email": "demo@example.com",
+      "location": { "city": "Lagos", "country": "NG", "lat": 6.5244, "lng": 3.3792 },
+      "skinProfile": { "type": "combination", "concerns": ["hyperpigmentation", "acne"] },
+      "createdAt": "2026-05-25T00:00:00Z"
+    }
+  ],
+
+  "ingredients": [
+    {
+      "id": "shea_butter",
+      "name": "Shea Butter",
+      "origin": "West Africa (Burkina Faso, Ghana)",
+      "benefits": ["Deep hydration", "Barrier repair", "Anti-inflammatory"],
+      "evidenceLinks": ["https://pubmed.ncbi.nlm.nih.gov/"],
+      "traditionalUses": ["Moisturizer", "Soothing skin"],
+      "commonProducts": ["Shea body butter", "Rich face creams"]
+    },
+    {
+      "id": "baobab",
+      "name": "Baobab",
+      "origin": "Sub-Saharan Africa",
+      "benefits": ["Vitamin-rich", "Antioxidant", "Skin elasticity"],
+      "evidenceLinks": [],
+      "traditionalUses": ["Nutritional and topical uses"],
+      "commonProducts": ["Facial oils", "Serums"]
+    },
+    {
+      "id": "aloe_vera",
+      "name": "Aloe Vera",
+      "origin": "North & East Africa (naturalized)",
+      "benefits": ["Soothing", "Hydrating", "Wound healing"],
+      "evidenceLinks": [],
+      "traditionalUses": ["After-sun", "Soothing irritations"],
+      "commonProducts": ["Gels", "Soothing serums"]
+    }
+  ],
+
+  "brands": [
+    {
+      "id": "brand_demo_afri",
+      "name": "AfriGlow Naturals",
+      "country": "NG",
+      "website": "https://example.afriglow.local",
+      "description": "Small-batch African ingredient brand"
+    }
+  ],
+
+  "products": [
+    {
+      "id": "prod_demo_001",
+      "name": "Shea Radiance Moisturizer",
+      "brandId": "brand_demo_afri",
+      "ingredients": ["shea_butter", "baobab"],
+      "skinTypes": ["dry", "combination"],
+      "price": 12.99,
+      "currency": "USD",
+      "rating": 4.6,
+      "reviewsCount": 12
+    }
+  ],
+
+  "routines": [
+    {
+      "id": "routine_demo_001",
+      "userId": "user_demo_001",
+      "name": "Starter: Hydration + Spot Care",
+      "steps": [
+        { "stepIndex": 0, "title": "Cleanse", "description": "Gentle cleanser", "time": "AM" },
+        { "stepIndex": 1, "title": "Treat", "description": "Spot treatment for acne/dark spots", "time": "AM/PM" },
+        { "stepIndex": 2, "title": "Moisturize", "description": "Light moisturizer with shea", "time": "AM/PM" }
+      ],
+      "createdAt": "2026-05-25T00:00:00Z"
+    }
+  ]
+}
