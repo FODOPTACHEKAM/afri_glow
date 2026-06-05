@@ -214,11 +214,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                           clipBehavior: Clip.antiAlias,
                           child: imagePath != null
-                              ? Image.file(
-                                  File(imagePath),
-                                  fit: BoxFit.cover,
-                                  errorBuilder: (_, __, ___) =>
-                                      _initialsWidget(user?.name),
+                              ? ClipOval(
+                                  child: Image.file(
+                                    File(imagePath),
+                                    width: 90,
+                                    height: 90,
+                                    fit: BoxFit.cover,
+                                    errorBuilder: (_, __, ___) =>
+                                        _initialsWidget(user?.name),
+                                  ),
                                 )
                               : _initialsWidget(user?.name),
                         ),
