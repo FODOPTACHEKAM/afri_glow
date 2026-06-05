@@ -379,12 +379,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
             // ── About ───────────────────────────────────────────────────
             _Card(
-              title: '🌿 About AfriGlow',
+              title: '👥 About Us',
               child: Column(
                 children: [
                   _TapTile(
-                      icon: Icons.info_outline,
-                      label: 'About AfriGlow',
+                      icon: Icons.people_outline_rounded,
+                      label: 'Meet the Team',
                       onTap: () => Navigator.push(
                             context,
                             MaterialPageRoute(

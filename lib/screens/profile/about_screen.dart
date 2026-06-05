@@ -4,17 +4,80 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../theme/app_colors.dart';
 
+// ── Team data ────────────────────────────────────────────────────────────────
+
+class _Member {
+  const _Member({
+    required this.name,
+    required this.initials,
+    required this.role,
+    required this.bio,
+    required this.tags,
+    this.email,
+    this.photoAsset,
+  });
+
+  final String name;
+  final String initials;
+  final String role;
+  final String bio;
+  final List<String> tags;
+  final String? email;
+  final String? photoAsset;
+}
+
+const _team = [
+  _Member(
+    name: 'Fodop Tachekam Ivan Jordan',
+    initials: 'IJ',
+    role: 'Software Engineer',
+    bio:
+        'Full-stack developer passionate about building seamless mobile and web experiences. Clean code, thoughtful UI, solid backends.',
+    tags: ['Flutter', 'Firebase', 'React', 'Node.js', 'UI/UX', 'SQL'],
+    email: 'fodop.jordan@ictuniversity.edu.cm',
+    photoAsset: 'assets/images/team/ivan.jpg',
+  ),
+  _Member(
+    name: 'Team Member 2',
+    initials: 'M2',
+    role: 'Coming soon',
+    bio: 'Details will be added soon.',
+    tags: [],
+  ),
+  _Member(
+    name: 'Team Member 3',
+    initials: 'M3',
+    role: 'Coming soon',
+    bio: 'Details will be added soon.',
+    tags: [],
+  ),
+  _Member(
+    name: 'Team Member 4',
+    initials: 'M4',
+    role: 'Coming soon',
+    bio: 'Details will be added soon.',
+    tags: [],
+  ),
+  _Member(
+    name: 'Team Member 5',
+    initials: 'M5',
+    role: 'Coming soon',
+    bio: 'Details will be added soon.',
+    tags: [],
+  ),
+];
+
+// ── Screen ───────────────────────────────────────────────────────────────────
+
 class AboutScreen extends StatelessWidget {
   const AboutScreen({super.key});
 
-  static const _email = 'fodop.jordan@ictuniversity.edu.cm';
-
-  Future<void> _launchEmail(BuildContext context) async {
-    final uri = Uri(scheme: 'mailto', path: _email);
+  Future<void> _launchEmail(BuildContext context, String email) async {
+    final uri = Uri(scheme: 'mailto', path: email);
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri);
     } else {
-      await Clipboard.setData(const ClipboardData(text: _email));
+      await Clipboard.setData(ClipboardData(text: email));
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -33,92 +96,245 @@ class AboutScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final surfaceColor =
-        isDark ? AppColors.darkCard : Colors.white;
-    final bgColor =
-        isDark ? AppColors.darkBg : AppColors.background;
+    final bgColor = isDark ? AppColors.darkBg : AppColors.background;
+    final textPrimary = isDark ? Colors.white : AppColors.espresso;
+    final textSecondary = isDark ? Colors.white60 : AppColors.bronze;
     final borderColor =
         isDark ? AppColors.darkDivider : const Color(0xFFEDE5D8);
-    final textPrimary =
-        isDark ? Colors.white : AppColors.espresso;
-    final textSecondary =
-        isDark ? Colors.white60 : AppColors.bronze;
+    final surfaceColor = isDark ? AppColors.darkCard : Colors.white;
 
     return Scaffold(
       backgroundColor: bgColor,
-      appBar: AppBar(
-        backgroundColor: bgColor,
-        elevation: 0,
-        surfaceTintColor: Colors.transparent,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new, size: 18),
-          onPressed: () => Navigator.pop(context),
-        ),
-        title: Text('About the Developer',
-            style: GoogleFonts.poppins(
-                fontSize: 15,
-                fontWeight: FontWeight.w600,
-                color: textPrimary)),
-        centerTitle: true,
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.fromLTRB(20, 8, 20, 40),
-        child: Column(
-          children: [
-            // ── Hero card ─────────────────────────────────────────────
-            _HeroCard(
-              surfaceColor: surfaceColor,
-              borderColor: borderColor,
-              textPrimary: textPrimary,
-              textSecondary: textSecondary,
+      body: CustomScrollView(
+        slivers: [
+          // ── Sticky app bar ─────────────────────────────────────────
+          SliverAppBar(
+            pinned: true,
+            backgroundColor: bgColor,
+            elevation: 0,
+            surfaceTintColor: Colors.transparent,
+            leading: IconButton(
+              icon: const Icon(Icons.arrow_back_ios_new, size: 18),
+              onPressed: () => Navigator.pop(context),
+              color: textPrimary,
             ),
-            const SizedBox(height: 16),
+            title: Text(
+              'About Us',
+              style: GoogleFonts.poppins(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600,
+                  color: textPrimary),
+            ),
+            centerTitle: true,
+          ),
 
-            // ── Stats row ─────────────────────────────────────────────
-            _StatsRow(
-              surfaceColor: surfaceColor,
-              borderColor: borderColor,
+          // ── Hero banner ────────────────────────────────────────────
+          SliverToBoxAdapter(
+            child: _HeroBanner(
               textPrimary: textPrimary,
               textSecondary: textSecondary,
             ),
-            const SizedBox(height: 16),
+          ),
 
-            // ── Contact card ──────────────────────────────────────────
-            _ContactCard(
-              surfaceColor: surfaceColor,
-              borderColor: borderColor,
-              textPrimary: textPrimary,
-              textSecondary: textSecondary,
-              onSendMessage: () => _launchEmail(context),
+          // ── Team header ────────────────────────────────────────────
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(20, 24, 20, 4),
+              child: Row(
+                children: [
+                  Container(width: 3, height: 18, color: AppColors.gold),
+                  const SizedBox(width: 10),
+                  Text('THE TEAM',
+                      style: GoogleFonts.dmSans(
+                          fontSize: 11,
+                          fontWeight: FontWeight.w600,
+                          letterSpacing: 1.8,
+                          color: textSecondary)),
+                  const SizedBox(width: 10),
+                  Expanded(
+                      child: Divider(color: borderColor, thickness: 0.5)),
+                  const SizedBox(width: 8),
+                  Text('${_team.length} members',
+                      style: GoogleFonts.dmSans(
+                          fontSize: 10.5, color: textSecondary)),
+                ],
+              ),
             ),
-          ],
-        ),
+          ),
+
+          // ── Member cards ───────────────────────────────────────────
+          SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (context, i) => Padding(
+                padding: EdgeInsets.fromLTRB(
+                    20, i == 0 ? 14 : 12, 20, i == _team.length - 1 ? 40 : 0),
+                child: _MemberCard(
+                  member: _team[i],
+                  surfaceColor: surfaceColor,
+                  borderColor: borderColor,
+                  textPrimary: textPrimary,
+                  textSecondary: textSecondary,
+                  onEmail: _team[i].email != null
+                      ? () => _launchEmail(context, _team[i].email!)
+                      : null,
+                ),
+              ),
+              childCount: _team.length,
+            ),
+          ),
+        ],
       ),
     );
   }
 }
 
-// ── Hero ────────────────────────────────────────────────────────────────────
+// ── Hero banner ───────────────────────────────────────────────────────────────
 
-class _HeroCard extends StatelessWidget {
-  const _HeroCard({
-    required this.surfaceColor,
-    required this.borderColor,
+class _HeroBanner extends StatelessWidget {
+  const _HeroBanner({
     required this.textPrimary,
     required this.textSecondary,
   });
 
+  final Color textPrimary;
+  final Color textSecondary;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.fromLTRB(20, 8, 20, 0),
+      padding: const EdgeInsets.fromLTRB(24, 28, 24, 28),
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [Color(0xFF3D1F0E), Color(0xFF1A0D05)],
+        ),
+        borderRadius: BorderRadius.circular(24),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Top row: AfriGlow badge
+          Row(
+            children: [
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                decoration: BoxDecoration(
+                  border: Border.all(color: AppColors.gold.withValues(alpha: 0.6)),
+                  borderRadius: BorderRadius.circular(100),
+                ),
+                child: Text('AfriGlow',
+                    style: GoogleFonts.dmSans(
+                        fontSize: 10,
+                        color: AppColors.accentGold,
+                        letterSpacing: 1.2)),
+              ),
+              const Spacer(),
+              Text('2025 – 2026',
+                  style: GoogleFonts.dmSans(
+                      fontSize: 10, color: Colors.white38, letterSpacing: 0.5)),
+            ],
+          ),
+          const SizedBox(height: 20),
+
+          // Headline
+          Text(
+            'Meet the\nteam behind\nAfriGlow.',
+            style: GoogleFonts.cormorantGaramond(
+                fontSize: 34,
+                fontWeight: FontWeight.w300,
+                color: Colors.white,
+                height: 1.15),
+          ),
+          const SizedBox(height: 14),
+
+          // Divider line
+          Container(width: 36, height: 1, color: AppColors.gold.withValues(alpha: 0.5)),
+          const SizedBox(height: 14),
+
+          // Sub text
+          Text(
+            'Five students from ICT University building a skincare app that celebrates African beauty ingredients.',
+            style: GoogleFonts.dmSans(
+                fontSize: 13,
+                height: 1.7,
+                color: Colors.white60),
+          ),
+          const SizedBox(height: 20),
+
+          // Stats row
+          Row(
+            children: [
+              _BannerStat(value: '5', label: 'Engineers'),
+              Container(
+                  width: 1,
+                  height: 32,
+                  color: Colors.white12,
+                  margin: const EdgeInsets.symmetric(horizontal: 20)),
+              _BannerStat(value: '12+', label: 'Features'),
+              Container(
+                  width: 1,
+                  height: 32,
+                  color: Colors.white12,
+                  margin: const EdgeInsets.symmetric(horizontal: 20)),
+              _BannerStat(value: '∞', label: 'Ambition'),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _BannerStat extends StatelessWidget {
+  const _BannerStat({required this.value, required this.label});
+
+  final String value;
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(value,
+            style: GoogleFonts.cormorantGaramond(
+                fontSize: 26,
+                fontWeight: FontWeight.w300,
+                color: Colors.white)),
+        Text(label.toUpperCase(),
+            style: GoogleFonts.dmSans(
+                fontSize: 9, letterSpacing: 1.2, color: Colors.white38)),
+      ],
+    );
+  }
+}
+
+// ── Member card ───────────────────────────────────────────────────────────────
+
+class _MemberCard extends StatelessWidget {
+  const _MemberCard({
+    required this.member,
+    required this.surfaceColor,
+    required this.borderColor,
+    required this.textPrimary,
+    required this.textSecondary,
+    this.onEmail,
+  });
+
+  final _Member member;
   final Color surfaceColor;
   final Color borderColor;
   final Color textPrimary;
   final Color textSecondary;
-
-  static const _tags = [
-    'Flutter', 'Firebase', 'React', 'Node.js', 'UI/UX', 'SQL',
-  ];
+  final VoidCallback? onEmail;
 
   @override
   Widget build(BuildContext context) {
+    final isPlaceholder = member.tags.isEmpty;
+
     return Container(
       decoration: BoxDecoration(
         color: surfaceColor,
@@ -130,67 +346,116 @@ class _HeroCard extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // Portrait
+            // ── Photo / Avatar column ───────────────────────────────
             SizedBox(
-              width: MediaQuery.of(context).size.width * 0.38,
-              child: const _Portrait(),
+              width: 100,
+              child: _MemberAvatar(member: member, isPlaceholder: isPlaceholder),
             ),
 
-            // Bio
+            // ── Info column ─────────────────────────────────────────
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(16, 20, 16, 20),
+                padding: const EdgeInsets.fromLTRB(16, 18, 16, 18),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('About me',
+                    // Role chip
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 9, vertical: 3),
+                      decoration: BoxDecoration(
+                        color: isPlaceholder
+                            ? borderColor.withValues(alpha: 0.5)
+                            : AppColors.gold.withValues(alpha: 0.15),
+                        borderRadius: BorderRadius.circular(100),
+                        border: Border.all(
+                          color: isPlaceholder
+                              ? borderColor
+                              : AppColors.gold.withValues(alpha: 0.4),
+                        ),
+                      ),
+                      child: Text(
+                        member.role.toUpperCase(),
                         style: GoogleFonts.dmSans(
-                            fontSize: 10,
-                            fontWeight: FontWeight.w500,
-                            letterSpacing: 1.2,
-                            color: textSecondary)),
-                    const SizedBox(height: 8),
-                    RichText(
-                      text: TextSpan(
-                        style: GoogleFonts.cormorantGaramond(
-                            fontSize: 22,
-                            fontWeight: FontWeight.w300,
-                            color: textPrimary,
-                            height: 1.2),
-                        children: const [
-                          TextSpan(text: 'Fodop Tachekam\n'),
-                          TextSpan(
-                            text: 'Ivan Jordan',
-                            style: TextStyle(fontStyle: FontStyle.italic),
-                          ),
-                        ],
+                            fontSize: 8.5,
+                            letterSpacing: 1.1,
+                            fontWeight: FontWeight.w600,
+                            color: isPlaceholder
+                                ? textSecondary.withValues(alpha: 0.6)
+                                : AppColors.gold),
                       ),
                     ),
-                    const SizedBox(height: 6),
-                    Text('Flutter · React · Firebase · Node.js',
-                        style: GoogleFonts.dmSans(
-                            fontSize: 11,
-                            color: textSecondary,
-                            letterSpacing: 0.3)),
-                    const SizedBox(height: 12),
-                    Container(
-                        width: 28, height: 1.5, color: textPrimary.withValues(alpha: 0.2)),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: 8),
+
+                    // Name
                     Text(
-                      'Full-stack developer passionate about building seamless mobile and web experiences. Clean code, thoughtful UI, solid backends.',
+                      member.name,
+                      style: GoogleFonts.cormorantGaramond(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w400,
+                          color: isPlaceholder
+                              ? textSecondary.withValues(alpha: 0.5)
+                              : textPrimary,
+                          height: 1.2),
+                    ),
+                    const SizedBox(height: 8),
+
+                    // Divider
+                    Container(
+                        width: 24,
+                        height: 1,
+                        color: textPrimary.withValues(alpha: isPlaceholder ? 0.08 : 0.15)),
+                    const SizedBox(height: 8),
+
+                    // Bio
+                    Text(
+                      member.bio,
                       style: GoogleFonts.dmSans(
                           fontSize: 11.5,
-                          height: 1.7,
-                          color: textSecondary),
+                          height: 1.65,
+                          color: isPlaceholder
+                              ? textSecondary.withValues(alpha: 0.4)
+                              : textSecondary),
                     ),
-                    const SizedBox(height: 14),
-                    Wrap(
-                      spacing: 6,
-                      runSpacing: 6,
-                      children: _tags
-                          .map((t) => _Tag(label: t, borderColor: borderColor, textColor: textSecondary))
-                          .toList(),
-                    ),
+
+                    // Tags
+                    if (member.tags.isNotEmpty) ...[
+                      const SizedBox(height: 12),
+                      Wrap(
+                        spacing: 5,
+                        runSpacing: 5,
+                        children: member.tags
+                            .map((t) => _Tag(
+                                label: t,
+                                borderColor: borderColor,
+                                textColor: textSecondary))
+                            .toList(),
+                      ),
+                    ],
+
+                    // Email button
+                    if (onEmail != null) ...[
+                      const SizedBox(height: 14),
+                      GestureDetector(
+                        onTap: onEmail,
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(Icons.mail_outline_rounded,
+                                size: 14, color: textSecondary),
+                            const SizedBox(width: 6),
+                            Text('Send message',
+                                style: GoogleFonts.dmSans(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w500,
+                                    color: textPrimary,
+                                    decoration: TextDecoration.underline,
+                                    decorationColor:
+                                        textPrimary.withValues(alpha: 0.3))),
+                          ],
+                        ),
+                      ),
+                    ],
                   ],
                 ),
               ),
@@ -202,76 +467,147 @@ class _HeroCard extends StatelessWidget {
   }
 }
 
-class _Portrait extends StatelessWidget {
-  const _Portrait();
+// ── Member avatar ─────────────────────────────────────────────────────────────
+
+class _MemberAvatar extends StatelessWidget {
+  const _MemberAvatar({
+    required this.member,
+    required this.isPlaceholder,
+  });
+
+  final _Member member;
+  final bool isPlaceholder;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      constraints: const BoxConstraints(minHeight: 280),
-      decoration: const BoxDecoration(
+      constraints: const BoxConstraints(minHeight: 180),
+      decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [Color(0xFF3D1F0E), Color(0xFF1A0D05)],
+          colors: isPlaceholder
+              ? [const Color(0xFF2A2A2A), const Color(0xFF1A1A1A)]
+              : [const Color(0xFF3D1F0E), const Color(0xFF1A0D05)],
         ),
       ),
-      child: Stack(
-        fit: StackFit.expand,
-        children: [
-          // Subtle pattern
-          Opacity(
-            opacity: 0.07,
-            child: GridView.builder(
-              physics: const NeverScrollableScrollPhysics(),
-              gridDelegate:
-                  const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 4,
-                childAspectRatio: 1,
-              ),
-              itemCount: 80,
-              itemBuilder: (_, __) => const Center(
-                child: Text('✦',
-                    style: TextStyle(color: Colors.white, fontSize: 10)),
-              ),
+      child: member.photoAsset != null
+          ? _PhotoWithFallback(
+              assetPath: member.photoAsset!,
+              initials: member.initials,
+            )
+          : _InitialsAvatar(
+              initials: member.initials,
+              isPlaceholder: isPlaceholder,
             ),
-          ),
-          // Initials avatar
-          Center(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  width: 72,
-                  height: 72,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(color: AppColors.gold, width: 2),
-                    color: Colors.white.withValues(alpha: 0.1),
-                  ),
-                  child: Center(
-                    child: Text('IJ',
-                        style: GoogleFonts.cormorantGaramond(
-                            fontSize: 28,
-                            fontWeight: FontWeight.w300,
-                            color: AppColors.accentGold,
-                            letterSpacing: 2)),
-                  ),
-                ),
-                const SizedBox(height: 10),
-                Text('FODOPTACHEKAM',
-                    style: GoogleFonts.dmSans(
-                        fontSize: 8,
-                        color: Colors.white38,
-                        letterSpacing: 1.5)),
-              ],
-            ),
-          ),
-        ],
+    );
+  }
+}
+
+class _PhotoWithFallback extends StatelessWidget {
+  const _PhotoWithFallback({
+    required this.assetPath,
+    required this.initials,
+  });
+
+  final String assetPath;
+  final String initials;
+
+  @override
+  Widget build(BuildContext context) {
+    return Image.asset(
+      assetPath,
+      fit: BoxFit.cover,
+      width: double.infinity,
+      height: double.infinity,
+      errorBuilder: (_, __, ___) => _InitialsAvatar(
+        initials: initials,
+        isPlaceholder: false,
       ),
     );
   }
 }
+
+class _InitialsAvatar extends StatelessWidget {
+  const _InitialsAvatar({
+    required this.initials,
+    required this.isPlaceholder,
+  });
+
+  final String initials;
+  final bool isPlaceholder;
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      fit: StackFit.expand,
+      children: [
+        // Subtle dot grid pattern
+        Opacity(
+          opacity: 0.06,
+          child: GridView.builder(
+            physics: const NeverScrollableScrollPhysics(),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+              childAspectRatio: 1,
+            ),
+            itemCount: 40,
+            itemBuilder: (_, __) => const Center(
+              child: Text('✦',
+                  style: TextStyle(color: Colors.white, fontSize: 8)),
+            ),
+          ),
+        ),
+        // Initials
+        Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                width: 56,
+                height: 56,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: isPlaceholder
+                        ? Colors.white12
+                        : AppColors.gold,
+                    width: 1.5,
+                  ),
+                  color: Colors.white.withValues(alpha: 0.06),
+                ),
+                child: Center(
+                  child: Text(
+                    initials,
+                    style: GoogleFonts.cormorantGaramond(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w300,
+                        color: isPlaceholder
+                            ? Colors.white24
+                            : AppColors.accentGold,
+                        letterSpacing: 2),
+                  ),
+                ),
+              ),
+              if (!isPlaceholder) ...[
+                const SizedBox(height: 8),
+                Text(
+                  'AFRIGLOW',
+                  style: GoogleFonts.dmSans(
+                      fontSize: 7,
+                      color: Colors.white24,
+                      letterSpacing: 1.5),
+                ),
+              ],
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+// ── Tag chip ──────────────────────────────────────────────────────────────────
 
 class _Tag extends StatelessWidget {
   const _Tag({
@@ -291,174 +627,10 @@ class _Tag extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(100),
         border: Border.all(color: borderColor),
-        color: Colors.transparent,
       ),
       child: Text(label,
           style: GoogleFonts.dmSans(
-              fontSize: 9.5,
-              letterSpacing: 0.6,
-              color: textColor)),
-    );
-  }
-}
-
-// ── Stats ────────────────────────────────────────────────────────────────────
-
-class _StatsRow extends StatelessWidget {
-  const _StatsRow({
-    required this.surfaceColor,
-    required this.borderColor,
-    required this.textPrimary,
-    required this.textSecondary,
-  });
-
-  final Color surfaceColor;
-  final Color borderColor;
-  final Color textPrimary;
-  final Color textSecondary;
-
-  @override
-  Widget build(BuildContext context) {
-    final stats = [
-      ('2+', 'Years exp.'),
-      ('5+', 'Projects'),
-      ('∞', 'Curiosity'),
-    ];
-
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: borderColor, width: 0.5),
-      ),
-      clipBehavior: Clip.antiAlias,
-      child: IntrinsicHeight(
-        child: Row(
-          children: List.generate(stats.length * 2 - 1, (i) {
-            if (i.isOdd) {
-              return VerticalDivider(
-                  width: 1, thickness: 0.5, color: borderColor);
-            }
-            final stat = stats[i ~/ 2];
-            return Expanded(
-              child: Container(
-                color: surfaceColor,
-                padding: const EdgeInsets.symmetric(vertical: 20),
-                child: Column(
-                  children: [
-                    Text(stat.$1,
-                        style: GoogleFonts.cormorantGaramond(
-                            fontSize: 30,
-                            fontWeight: FontWeight.w300,
-                            color: textPrimary)),
-                    const SizedBox(height: 4),
-                    Text(stat.$2.toUpperCase(),
-                        style: GoogleFonts.dmSans(
-                            fontSize: 9.5,
-                            letterSpacing: 1.0,
-                            color: textSecondary)),
-                  ],
-                ),
-              ),
-            );
-          }),
-        ),
-      ),
-    );
-  }
-}
-
-// ── Contact card ─────────────────────────────────────────────────────────────
-
-class _ContactCard extends StatelessWidget {
-  const _ContactCard({
-    required this.surfaceColor,
-    required this.borderColor,
-    required this.textPrimary,
-    required this.textSecondary,
-    required this.onSendMessage,
-  });
-
-  final Color surfaceColor;
-  final Color borderColor;
-  final Color textPrimary;
-  final Color textSecondary;
-  final VoidCallback onSendMessage;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: borderColor, width: 0.5),
-      ),
-      clipBehavior: Clip.antiAlias,
-      child: Column(
-        children: [
-          // Header
-          Container(
-            width: double.infinity,
-            color: surfaceColor,
-            padding: const EdgeInsets.fromLTRB(20, 20, 20, 16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text("Let's build something.",
-                    style: GoogleFonts.cormorantGaramond(
-                        fontSize: 24,
-                        fontWeight: FontWeight.w300,
-                        color: textPrimary)),
-                const SizedBox(height: 6),
-                Text(
-                  "Got an idea that needs building? I turn concepts into real, polished products — from Flutter apps to full-stack web solutions.",
-                  style: GoogleFonts.dmSans(
-                      fontSize: 13,
-                      height: 1.65,
-                      color: textSecondary),
-                ),
-              ],
-            ),
-          ),
-
-          Container(height: 0.5, color: borderColor),
-
-          // Body
-          Container(
-            color: AppColors.background.withValues(alpha: 0.5),
-            padding: const EdgeInsets.fromLTRB(20, 16, 20, 18),
-            child: Row(
-              children: [
-                Icon(Icons.mail_outline_rounded,
-                    size: 18, color: textSecondary),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: Text('fodop.jordan@ictuniversity.edu.cm',
-                      style: GoogleFonts.dmSans(
-                          fontSize: 12.5,
-                          fontWeight: FontWeight.w500,
-                          color: textPrimary)),
-                ),
-                const SizedBox(width: 8),
-                GestureDetector(
-                  onTap: onSendMessage,
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 16, vertical: 9),
-                    decoration: BoxDecoration(
-                      color: AppColors.espresso,
-                      borderRadius: BorderRadius.circular(100),
-                    ),
-                    child: Text('Message →',
-                        style: GoogleFonts.dmSans(
-                            fontSize: 12,
-                            color: Colors.white,
-                            letterSpacing: 0.2)),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
+              fontSize: 9.5, letterSpacing: 0.5, color: textColor)),
     );
   }
 }
