@@ -19,12 +19,15 @@ class AuthLabel extends StatelessWidget {
   const AuthLabel(this.text, {super.key});
 
   @override
-  Widget build(BuildContext context) => Text(text,
-      style: GoogleFonts.poppins(
-          fontSize: 12,
-          fontWeight: FontWeight.w600,
-          color: AppColors.espresso,
-          letterSpacing: 0.3));
+  Widget build(BuildContext context) {
+    final onSurface = Theme.of(context).colorScheme.onSurface;
+    return Text(text,
+        style: GoogleFonts.poppins(
+            fontSize: 12,
+            fontWeight: FontWeight.w600,
+            color: onSurface,
+            letterSpacing: 0.3));
+  }
 }
 
 class AuthField extends StatelessWidget {
@@ -49,32 +52,39 @@ class AuthField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final onSurface = Theme.of(context).colorScheme.onSurface;
+    final fillColor = isDark ? AppColors.darkCard : AppColors.background;
+    final borderColor = isDark
+        ? AppColors.darkDivider
+        : AppColors.bronze.withValues(alpha: 0.25);
+    final iconColor = isDark ? AppColors.gold : AppColors.bronze;
+
     return TextFormField(
       controller: controller,
       obscureText: obscure,
       keyboardType: keyboardType,
-      style: GoogleFonts.poppins(fontSize: 14, color: AppColors.espresso),
+      style: GoogleFonts.poppins(fontSize: 14, color: onSurface),
       validator: validator,
       decoration: InputDecoration(
         hintText: hint,
         hintStyle: GoogleFonts.poppins(
             fontSize: 13,
-            color: AppColors.bronze.withValues(alpha: 0.6)),
-        prefixIcon: Icon(icon, color: AppColors.bronze, size: 20),
+            color: (isDark ? Colors.white : AppColors.bronze)
+                .withValues(alpha: 0.5)),
+        prefixIcon: Icon(icon, color: iconColor, size: 20),
         suffixIcon: suffix,
         filled: true,
-        fillColor: AppColors.background,
+        fillColor: fillColor,
         contentPadding:
             const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(
-              color: AppColors.bronze.withValues(alpha: 0.25), width: 1),
+          borderSide: BorderSide(color: borderColor, width: 1),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(
-              color: AppColors.bronze.withValues(alpha: 0.25), width: 1),
+          borderSide: BorderSide(color: borderColor, width: 1),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
@@ -144,22 +154,23 @@ class AuthOrDivider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final dividerColor = isDark
+        ? AppColors.darkDivider
+        : AppColors.bronze.withValues(alpha: 0.25);
+    final textColor = isDark ? AppColors.gold : AppColors.bronze;
+
     return Row(
       children: [
         Expanded(
-            child: Divider(
-                color: AppColors.bronze.withValues(alpha: 0.25),
-                thickness: 1)),
+            child: Divider(color: dividerColor, thickness: 1)),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12),
           child: Text('or',
-              style: GoogleFonts.poppins(
-                  fontSize: 12, color: AppColors.bronze)),
+              style: GoogleFonts.poppins(fontSize: 12, color: textColor)),
         ),
         Expanded(
-            child: Divider(
-                color: AppColors.bronze.withValues(alpha: 0.25),
-                thickness: 1)),
+            child: Divider(color: dividerColor, thickness: 1)),
       ],
     );
   }
@@ -174,16 +185,22 @@ class AuthGoogleButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final textColor = isDark ? AppColors.cream : AppColors.espresso;
+    final borderColor = isDark
+        ? AppColors.darkDivider
+        : AppColors.bronze.withValues(alpha: 0.35);
+    final bgColor = isDark ? AppColors.darkCard : Colors.white;
+
     return SizedBox(
       width: double.infinity,
       height: 52,
       child: OutlinedButton(
         onPressed: loading ? null : onTap,
         style: OutlinedButton.styleFrom(
-          foregroundColor: AppColors.espresso,
-          side: BorderSide(
-              color: AppColors.bronze.withValues(alpha: 0.35),
-              width: 1.2),
+          foregroundColor: textColor,
+          backgroundColor: bgColor,
+          side: BorderSide(color: borderColor, width: 1.2),
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(14)),
         ),
@@ -196,7 +213,7 @@ class AuthGoogleButton extends StatelessWidget {
                 style: GoogleFonts.poppins(
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
-                    color: AppColors.espresso)),
+                    color: textColor)),
           ],
         ),
       ),
