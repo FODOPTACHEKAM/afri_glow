@@ -866,15 +866,15 @@ class _SkinQuizScreenState extends State<SkinQuizScreen> {
 
               // Divider
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 16),
+                padding: const EdgeInsets.symmetric(vertical: 5),
                 child: Row(children: [
                   const Expanded(
                       child: Divider(color: Color(0xFFE0D8D0))),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    padding: const EdgeInsets.symmetric(horizontal: 4),
                     child: Text('&',
                         style: GoogleFonts.poppins(
-                            fontSize: 18,
+                            fontSize: 6,
                             color: AppColors.warmBrown,
                             fontWeight: FontWeight.w300)),
                   ),
@@ -1112,15 +1112,15 @@ class _SkinQuizScreenState extends State<SkinQuizScreen> {
       color = AppColors.deepGreen;
     }
     return Container(
-      padding: const EdgeInsets.all(10),
+      padding: const EdgeInsets.all(3),
       decoration: BoxDecoration(
         color: color.withAlpha(20),
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(3),
         border: Border.all(color: color.withAlpha(60)),
       ),
       child: Text(msg,
           style: GoogleFonts.poppins(
-              color: color, fontSize: Responsive.sp(context, 12))),
+              color: color, fontSize: Responsive.sp(context, 4))),
     );
   }
 
@@ -1138,15 +1138,15 @@ class _SkinQuizScreenState extends State<SkinQuizScreen> {
       color = AppColors.deepGreen;
     }
     return Container(
-      padding: const EdgeInsets.all(10),
+      padding: const EdgeInsets.all(3),
       decoration: BoxDecoration(
         color: color.withAlpha(20),
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(3),
         border: Border.all(color: color.withAlpha(60)),
       ),
       child: Text(msg,
           style: GoogleFonts.poppins(
-              color: color, fontSize: Responsive.sp(context, 12))),
+              color: color, fontSize: Responsive.sp(context, 4))),
     );
   }
 
@@ -1231,10 +1231,10 @@ class _HabitCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(5),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(5),
         border: Border.all(color: const Color(0xFFE0D8D0)),
       ),
       child: Column(
@@ -1243,41 +1243,41 @@ class _HabitCard extends StatelessWidget {
             children: [
               Text(emoji,
                   style:
-                      TextStyle(fontSize: Responsive.sp(context, 22))),
-              const SizedBox(width: 8),
+                      TextStyle(fontSize: Responsive.sp(context, 7))),
+              const SizedBox(width: 3),
               Text(title,
                   style: GoogleFonts.poppins(
-                      fontSize: Responsive.sp(context, 14),
+                      fontSize: Responsive.sp(context, 5),
                       fontWeight: FontWeight.w600,
                       color: AppColors.darkBrown)),
             ],
           ),
-          const SizedBox(height: 14),
+          const SizedBox(height: 5),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               _CounterBtn(
                   icon: Icons.remove_circle_outline,
                   onTap: onDecrement),
-              const SizedBox(width: 20),
+              const SizedBox(width: 7),
               Column(
                 children: [
                   Text('$value',
                       style: GoogleFonts.poppins(
-                          fontSize: Responsive.sp(context, 44),
+                          fontSize: Responsive.sp(context, 15),
                           fontWeight: FontWeight.w700,
                           color: AppColors.deepGreen)),
                   Text(unit,
                       style: GoogleFonts.poppins(
                           color: AppColors.warmBrown,
-                          fontSize: Responsive.sp(context, 12))),
+                          fontSize: Responsive.sp(context, 4))),
                 ],
               ),
-              const SizedBox(width: 20),
+              const SizedBox(width: 7),
               _CounterBtn(icon: Icons.add_circle_outline, onTap: onIncrement),
             ],
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 4),
           tip,
         ],
       ),
@@ -1295,7 +1295,7 @@ class _CounterBtn extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Icon(icon,
-          size: Responsive.iconSize(context, base: 32),
+          size: Responsive.iconSize(context, base: 11),
           color: onTap != null
               ? AppColors.deepGreen
               : AppColors.deepGreen.withAlpha(60)),
