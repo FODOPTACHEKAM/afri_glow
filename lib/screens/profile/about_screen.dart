@@ -4,84 +4,134 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../theme/app_colors.dart';
 
+// ── Translations ──────────────────────────────────────────────────────────────
+
+class _T {
+  const _T(this.en, this.fr);
+  final String en;
+  final String fr;
+  String get(String lang) => lang == 'fr' ? fr : en;
+}
+
+const _tTitle        = _T('About Us',         'À propos');
+const _tBadge        = _T('AfriGlow',          'AfriGlow');
+const _tHeadline     = _T('Meet the\nteam behind\nAfriGlow.',
+                           'Rencontrez\nl\'équipe derrière\nAfriGlow.');
+const _tSubtitle     = _T(
+  'Five students from ICT University building a skincare app that celebrates African beauty ingredients.',
+  'Cinq étudiants de l\'ICT University qui développent une application de soins valorisant les ingrédients beauté africains.',
+);
+const _tEngineers    = _T('Engineers',  'Ingénieurs');
+const _tFeatures     = _T('Features',   'Fonctions');
+const _tAmbition     = _T('Ambition',   'Ambition');
+const _tTeamLabel    = _T('THE TEAM',   'L\'ÉQUIPE');
+const _tMembers      = _T('members',    'membres');
+const _tSendMessage  = _T('Send message', 'Envoyer un message');
+const _tCopied       = _T('Email copied to clipboard', 'E-mail copié dans le presse-papiers');
+
 // ── Team data ────────────────────────────────────────────────────────────────
 
 class _Member {
   const _Member({
-    required this.name,
+    required this.nameEn,
     required this.initials,
-    required this.role,
-    required this.bio,
+    required this.roleEn,
+    required this.roleFr,
+    required this.bioEn,
+    required this.bioFr,
     required this.tags,
     this.email,
     this.photoAsset,
   });
 
-  final String name;
+  final String nameEn;
   final String initials;
-  final String role;
-  final String bio;
+  final String roleEn;
+  final String roleFr;
+  final String bioEn;
+  final String bioFr;
   final List<String> tags;
   final String? email;
   final String? photoAsset;
+
+  String role(String lang) => lang == 'fr' ? roleFr : roleEn;
+  String bio(String lang)  => lang == 'fr' ? bioFr  : bioEn;
 }
 
 const _team = [
   _Member(
-    name: 'Fodop Tachekam Ivan Jordan',
-    initials: 'IJ',
-    role: 'Software Engineer',
-    bio:
-        'Full-stack developer passionate about building seamless mobile and web experiences. Clean code, thoughtful UI, solid backends.',
-    tags: ['Flutter', 'Firebase', 'React', 'Node.js', 'UI/UX', 'SQL'],
-    email: 'fodop.jordan@ictuniversity.edu.cm',
+    nameEn:     'Fodop Tachekam Ivan Jordan',
+    initials:   'IJ',
+    roleEn:     'Software Engineer',
+    roleFr:     'Ingénieur Logiciel',
+    bioEn:      'Full-stack developer passionate about building seamless mobile and web experiences. Clean code, thoughtful UI, solid backends.',
+    bioFr:      'Développeur full-stack passionné par la création d\'expériences mobiles et web fluides. Code propre, UI soignée, backends solides.',
+    tags:       ['Flutter', 'Firebase', 'React', 'Node.js', 'UI/UX', 'SQL'],
+    email:      'fodop.jordan@ictuniversity.edu.cm',
     photoAsset: 'assets/images/team/ivan.jpg',
   ),
   _Member(
-    name: 'Team Member 2',
+    nameEn:   'Team Member 2',
     initials: 'M2',
-    role: 'Coming soon',
-    bio: 'Details will be added soon.',
-    tags: [],
+    roleEn:   'Coming soon',
+    roleFr:   'Bientôt',
+    bioEn:    'Details will be added soon.',
+    bioFr:    'Les détails seront ajoutés bientôt.',
+    tags:     [],
   ),
   _Member(
-    name: 'Team Member 3',
+    nameEn:   'Team Member 3',
     initials: 'M3',
-    role: 'Coming soon',
-    bio: 'Details will be added soon.',
-    tags: [],
+    roleEn:   'Coming soon',
+    roleFr:   'Bientôt',
+    bioEn:    'Details will be added soon.',
+    bioFr:    'Les détails seront ajoutés bientôt.',
+    tags:     [],
   ),
   _Member(
-    name: 'Team Member 4',
+    nameEn:   'Team Member 4',
     initials: 'M4',
-    role: 'Coming soon',
-    bio: 'Details will be added soon.',
-    tags: [],
+    roleEn:   'Coming soon',
+    roleFr:   'Bientôt',
+    bioEn:    'Details will be added soon.',
+    bioFr:    'Les détails seront ajoutés bientôt.',
+    tags:     [],
   ),
   _Member(
-    name: 'Team Member 5',
+    nameEn:   'Team Member 5',
     initials: 'M5',
-    role: 'Coming soon',
-    bio: 'Details will be added soon.',
-    tags: [],
+    roleEn:   'Coming soon',
+    roleFr:   'Bientôt',
+    bioEn:    'Details will be added soon.',
+    bioFr:    'Les détails seront ajoutés bientôt.',
+    tags:     [],
   ),
 ];
 
 // ── Screen ───────────────────────────────────────────────────────────────────
 
-class AboutScreen extends StatelessWidget {
+class AboutScreen extends StatefulWidget {
   const AboutScreen({super.key});
 
-  Future<void> _launchEmail(BuildContext context, String email) async {
+  @override
+  State<AboutScreen> createState() => _AboutScreenState();
+}
+
+class _AboutScreenState extends State<AboutScreen> {
+  String _lang = 'en';
+
+  void _toggleLang() => setState(() => _lang = _lang == 'en' ? 'fr' : 'en');
+
+  Future<void> _launchEmail(String email) async {
     final uri = Uri(scheme: 'mailto', path: email);
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri);
     } else {
       await Clipboard.setData(ClipboardData(text: email));
-      if (context.mounted) {
+      if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Email copied to clipboard',
+            content: Text(_tCopied.get(_lang),
                 style: GoogleFonts.poppins(fontSize: 13)),
             behavior: SnackBarBehavior.floating,
             backgroundColor: AppColors.espresso,
@@ -96,18 +146,17 @@ class AboutScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final bgColor = isDark ? AppColors.darkBg : AppColors.background;
-    final textPrimary = isDark ? Colors.white : AppColors.espresso;
-    final textSecondary = isDark ? Colors.white60 : AppColors.bronze;
-    final borderColor =
-        isDark ? AppColors.darkDivider : const Color(0xFFEDE5D8);
-    final surfaceColor = isDark ? AppColors.darkCard : Colors.white;
+    final bgColor      = isDark ? AppColors.darkBg   : AppColors.background;
+    final surfaceColor = isDark ? AppColors.darkCard  : Colors.white;
+    final borderColor  = isDark ? AppColors.darkDivider : const Color(0xFFEDE5D8);
+    final textPrimary  = isDark ? Colors.white        : AppColors.espresso;
+    final textSecondary = isDark ? Colors.white60     : AppColors.bronze;
 
     return Scaffold(
       backgroundColor: bgColor,
       body: CustomScrollView(
         slivers: [
-          // ── Sticky app bar ─────────────────────────────────────────
+          // ── App bar with language toggle ────────────────────────
           SliverAppBar(
             pinned: true,
             backgroundColor: bgColor,
@@ -118,25 +167,37 @@ class AboutScreen extends StatelessWidget {
               onPressed: () => Navigator.pop(context),
               color: textPrimary,
             ),
-            title: Text(
-              'About Us',
-              style: GoogleFonts.poppins(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w600,
-                  color: textPrimary),
+            title: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 300),
+              child: Text(
+                _tTitle.get(_lang),
+                key: ValueKey(_lang),
+                style: GoogleFonts.poppins(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600,
+                    color: textPrimary),
+              ),
             ),
             centerTitle: true,
+            actions: [
+              Padding(
+                padding: const EdgeInsets.only(right: 12),
+                child: _LangToggle(
+                  lang: _lang,
+                  onToggle: _toggleLang,
+                  borderColor: borderColor,
+                  textPrimary: textPrimary,
+                ),
+              ),
+            ],
           ),
 
-          // ── Hero banner ────────────────────────────────────────────
+          // ── Hero banner ────────────────────────────────────────
           SliverToBoxAdapter(
-            child: _HeroBanner(
-              textPrimary: textPrimary,
-              textSecondary: textSecondary,
-            ),
+            child: _HeroBanner(lang: _lang),
           ),
 
-          // ── Team header ────────────────────────────────────────────
+          // ── Team header ────────────────────────────────────────
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.fromLTRB(20, 24, 20, 4),
@@ -144,17 +205,23 @@ class AboutScreen extends StatelessWidget {
                 children: [
                   Container(width: 3, height: 18, color: AppColors.gold),
                   const SizedBox(width: 10),
-                  Text('THE TEAM',
+                  AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 250),
+                    child: Text(
+                      _tTeamLabel.get(_lang),
+                      key: ValueKey('team-$_lang'),
                       style: GoogleFonts.dmSans(
                           fontSize: 11,
                           fontWeight: FontWeight.w600,
                           letterSpacing: 1.8,
-                          color: textSecondary)),
+                          color: textSecondary),
+                    ),
+                  ),
                   const SizedBox(width: 10),
                   Expanded(
                       child: Divider(color: borderColor, thickness: 0.5)),
                   const SizedBox(width: 8),
-                  Text('${_team.length} members',
+                  Text('${_team.length} ${_tMembers.get(_lang)}',
                       style: GoogleFonts.dmSans(
                           fontSize: 10.5, color: textSecondary)),
                 ],
@@ -162,20 +229,22 @@ class AboutScreen extends StatelessWidget {
             ),
           ),
 
-          // ── Member cards ───────────────────────────────────────────
+          // ── Member cards ───────────────────────────────────────
           SliverList(
             delegate: SliverChildBuilderDelegate(
               (context, i) => Padding(
                 padding: EdgeInsets.fromLTRB(
-                    20, i == 0 ? 14 : 12, 20, i == _team.length - 1 ? 40 : 0),
+                    20, i == 0 ? 14 : 12, 20,
+                    i == _team.length - 1 ? 40 : 0),
                 child: _MemberCard(
                   member: _team[i],
+                  lang: _lang,
                   surfaceColor: surfaceColor,
                   borderColor: borderColor,
                   textPrimary: textPrimary,
                   textSecondary: textSecondary,
                   onEmail: _team[i].email != null
-                      ? () => _launchEmail(context, _team[i].email!)
+                      ? () => _launchEmail(_team[i].email!)
                       : null,
                 ),
               ),
@@ -188,16 +257,67 @@ class AboutScreen extends StatelessWidget {
   }
 }
 
+// ── Language toggle pill ──────────────────────────────────────────────────────
+
+class _LangToggle extends StatelessWidget {
+  const _LangToggle({
+    required this.lang,
+    required this.onToggle,
+    required this.borderColor,
+    required this.textPrimary,
+  });
+
+  final String lang;
+  final VoidCallback onToggle;
+  final Color borderColor;
+  final Color textPrimary;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onToggle,
+      child: Container(
+        height: 32,
+        padding: const EdgeInsets.all(3),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(100),
+          border: Border.all(color: borderColor),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: ['en', 'fr'].map((code) {
+            final active = lang == code;
+            return AnimatedContainer(
+              duration: const Duration(milliseconds: 220),
+              curve: Curves.easeInOut,
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+              decoration: BoxDecoration(
+                color: active ? AppColors.espresso : Colors.transparent,
+                borderRadius: BorderRadius.circular(100),
+              ),
+              child: Text(
+                code.toUpperCase(),
+                style: GoogleFonts.dmSans(
+                  fontSize: 11,
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: 0.5,
+                  color: active ? Colors.white : textPrimary.withValues(alpha: 0.4),
+                ),
+              ),
+            );
+          }).toList(),
+        ),
+      ),
+    );
+  }
+}
+
 // ── Hero banner ───────────────────────────────────────────────────────────────
 
 class _HeroBanner extends StatelessWidget {
-  const _HeroBanner({
-    required this.textPrimary,
-    required this.textSecondary,
-  });
+  const _HeroBanner({required this.lang});
 
-  final Color textPrimary;
-  final Color textSecondary;
+  final String lang;
 
   @override
   Widget build(BuildContext context) {
@@ -215,17 +335,18 @@ class _HeroBanner extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Top row: AfriGlow badge
+          // Badge + year
           Row(
             children: [
               Container(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                 decoration: BoxDecoration(
-                  border: Border.all(color: AppColors.gold.withValues(alpha: 0.6)),
+                  border: Border.all(
+                      color: AppColors.gold.withValues(alpha: 0.6)),
                   borderRadius: BorderRadius.circular(100),
                 ),
-                child: Text('AfriGlow',
+                child: Text(_tBadge.get(lang),
                     style: GoogleFonts.dmSans(
                         fontSize: 10,
                         color: AppColors.accentGold,
@@ -234,58 +355,71 @@ class _HeroBanner extends StatelessWidget {
               const Spacer(),
               Text('2025 – 2026',
                   style: GoogleFonts.dmSans(
-                      fontSize: 10, color: Colors.white38, letterSpacing: 0.5)),
+                      fontSize: 10,
+                      color: Colors.white38,
+                      letterSpacing: 0.5)),
             ],
           ),
           const SizedBox(height: 20),
 
           // Headline
-          Text(
-            'Meet the\nteam behind\nAfriGlow.',
-            style: GoogleFonts.cormorantGaramond(
-                fontSize: 34,
-                fontWeight: FontWeight.w300,
-                color: Colors.white,
-                height: 1.15),
+          AnimatedSwitcher(
+            duration: const Duration(milliseconds: 300),
+            transitionBuilder: (child, anim) =>
+                FadeTransition(opacity: anim, child: child),
+            child: Text(
+              _tHeadline.get(lang),
+              key: ValueKey('headline-$lang'),
+              style: GoogleFonts.cormorantGaramond(
+                  fontSize: 34,
+                  fontWeight: FontWeight.w300,
+                  color: Colors.white,
+                  height: 1.15),
+            ),
           ),
           const SizedBox(height: 14),
 
-          // Divider line
-          Container(width: 36, height: 1, color: AppColors.gold.withValues(alpha: 0.5)),
+          Container(
+              width: 36,
+              height: 1,
+              color: AppColors.gold.withValues(alpha: 0.5)),
           const SizedBox(height: 14),
 
-          // Sub text
-          Text(
-            'Five students from ICT University building a skincare app that celebrates African beauty ingredients.',
-            style: GoogleFonts.dmSans(
-                fontSize: 13,
-                height: 1.7,
-                color: Colors.white60),
+          // Subtitle
+          AnimatedSwitcher(
+            duration: const Duration(milliseconds: 300),
+            transitionBuilder: (child, anim) =>
+                FadeTransition(opacity: anim, child: child),
+            child: Text(
+              _tSubtitle.get(lang),
+              key: ValueKey('sub-$lang'),
+              style: GoogleFonts.dmSans(
+                  fontSize: 13, height: 1.7, color: Colors.white60),
+            ),
           ),
           const SizedBox(height: 20),
 
-          // Stats row
+          // Stats
           Row(
             children: [
-              _BannerStat(value: '5', label: 'Engineers'),
-              Container(
-                  width: 1,
-                  height: 32,
-                  color: Colors.white12,
-                  margin: const EdgeInsets.symmetric(horizontal: 20)),
-              _BannerStat(value: '12+', label: 'Features'),
-              Container(
-                  width: 1,
-                  height: 32,
-                  color: Colors.white12,
-                  margin: const EdgeInsets.symmetric(horizontal: 20)),
-              _BannerStat(value: '∞', label: 'Ambition'),
+              _BannerStat(value: '5',   label: _tEngineers.get(lang)),
+              _divider(),
+              _BannerStat(value: '12+', label: _tFeatures.get(lang)),
+              _divider(),
+              _BannerStat(value: '∞',   label: _tAmbition.get(lang)),
             ],
           ),
         ],
       ),
     );
   }
+
+  Widget _divider() => Container(
+        width: 1,
+        height: 32,
+        color: Colors.white12,
+        margin: const EdgeInsets.symmetric(horizontal: 20),
+      );
 }
 
 class _BannerStat extends StatelessWidget {
@@ -317,6 +451,7 @@ class _BannerStat extends StatelessWidget {
 class _MemberCard extends StatelessWidget {
   const _MemberCard({
     required this.member,
+    required this.lang,
     required this.surfaceColor,
     required this.borderColor,
     required this.textPrimary,
@@ -325,6 +460,7 @@ class _MemberCard extends StatelessWidget {
   });
 
   final _Member member;
+  final String lang;
   final Color surfaceColor;
   final Color borderColor;
   final Color textPrimary;
@@ -346,13 +482,14 @@ class _MemberCard extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // ── Photo / Avatar column ───────────────────────────────
+            // Photo / avatar
             SizedBox(
               width: 100,
-              child: _MemberAvatar(member: member, isPlaceholder: isPlaceholder),
+              child: _MemberAvatar(
+                  member: member, isPlaceholder: isPlaceholder),
             ),
 
-            // ── Info column ─────────────────────────────────────────
+            // Info
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(16, 18, 16, 18),
@@ -360,36 +497,40 @@ class _MemberCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // Role chip
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 9, vertical: 3),
-                      decoration: BoxDecoration(
-                        color: isPlaceholder
-                            ? borderColor.withValues(alpha: 0.5)
-                            : AppColors.gold.withValues(alpha: 0.15),
-                        borderRadius: BorderRadius.circular(100),
-                        border: Border.all(
+                    AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 250),
+                      child: Container(
+                        key: ValueKey('role-${member.initials}-$lang'),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 9, vertical: 3),
+                        decoration: BoxDecoration(
                           color: isPlaceholder
-                              ? borderColor
-                              : AppColors.gold.withValues(alpha: 0.4),
-                        ),
-                      ),
-                      child: Text(
-                        member.role.toUpperCase(),
-                        style: GoogleFonts.dmSans(
-                            fontSize: 8.5,
-                            letterSpacing: 1.1,
-                            fontWeight: FontWeight.w600,
+                              ? borderColor.withValues(alpha: 0.5)
+                              : AppColors.gold.withValues(alpha: 0.15),
+                          borderRadius: BorderRadius.circular(100),
+                          border: Border.all(
                             color: isPlaceholder
-                                ? textSecondary.withValues(alpha: 0.6)
-                                : AppColors.gold),
+                                ? borderColor
+                                : AppColors.gold.withValues(alpha: 0.4),
+                          ),
+                        ),
+                        child: Text(
+                          member.role(lang).toUpperCase(),
+                          style: GoogleFonts.dmSans(
+                              fontSize: 8.5,
+                              letterSpacing: 1.1,
+                              fontWeight: FontWeight.w600,
+                              color: isPlaceholder
+                                  ? textSecondary.withValues(alpha: 0.6)
+                                  : AppColors.gold),
+                        ),
                       ),
                     ),
                     const SizedBox(height: 8),
 
-                    // Name
+                    // Name (same in both languages)
                     Text(
-                      member.name,
+                      member.nameEn,
                       style: GoogleFonts.cormorantGaramond(
                           fontSize: 18,
                           fontWeight: FontWeight.w400,
@@ -400,22 +541,28 @@ class _MemberCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 8),
 
-                    // Divider
                     Container(
                         width: 24,
                         height: 1,
-                        color: textPrimary.withValues(alpha: isPlaceholder ? 0.08 : 0.15)),
+                        color: textPrimary
+                            .withValues(alpha: isPlaceholder ? 0.08 : 0.15)),
                     const SizedBox(height: 8),
 
                     // Bio
-                    Text(
-                      member.bio,
-                      style: GoogleFonts.dmSans(
-                          fontSize: 11.5,
-                          height: 1.65,
-                          color: isPlaceholder
-                              ? textSecondary.withValues(alpha: 0.4)
-                              : textSecondary),
+                    AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 280),
+                      transitionBuilder: (child, anim) =>
+                          FadeTransition(opacity: anim, child: child),
+                      child: Text(
+                        member.bio(lang),
+                        key: ValueKey('bio-${member.initials}-$lang'),
+                        style: GoogleFonts.dmSans(
+                            fontSize: 11.5,
+                            height: 1.65,
+                            color: isPlaceholder
+                                ? textSecondary.withValues(alpha: 0.4)
+                                : textSecondary),
+                      ),
                     ),
 
                     // Tags
@@ -444,14 +591,20 @@ class _MemberCard extends StatelessWidget {
                             Icon(Icons.mail_outline_rounded,
                                 size: 14, color: textSecondary),
                             const SizedBox(width: 6),
-                            Text('Send message',
+                            AnimatedSwitcher(
+                              duration: const Duration(milliseconds: 250),
+                              child: Text(
+                                _tSendMessage.get(lang),
+                                key: ValueKey('mail-$lang'),
                                 style: GoogleFonts.dmSans(
                                     fontSize: 12,
                                     fontWeight: FontWeight.w500,
                                     color: textPrimary,
                                     decoration: TextDecoration.underline,
                                     decorationColor:
-                                        textPrimary.withValues(alpha: 0.3))),
+                                        textPrimary.withValues(alpha: 0.3)),
+                              ),
+                            ),
                           ],
                         ),
                       ),
@@ -542,7 +695,6 @@ class _InitialsAvatar extends StatelessWidget {
     return Stack(
       fit: StackFit.expand,
       children: [
-        // Subtle dot grid pattern
         Opacity(
           opacity: 0.06,
           child: GridView.builder(
@@ -558,7 +710,6 @@ class _InitialsAvatar extends StatelessWidget {
             ),
           ),
         ),
-        // Initials
         Center(
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -569,9 +720,7 @@ class _InitialsAvatar extends StatelessWidget {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   border: Border.all(
-                    color: isPlaceholder
-                        ? Colors.white12
-                        : AppColors.gold,
+                    color: isPlaceholder ? Colors.white12 : AppColors.gold,
                     width: 1.5,
                   ),
                   color: Colors.white.withValues(alpha: 0.06),
@@ -594,9 +743,7 @@ class _InitialsAvatar extends StatelessWidget {
                 Text(
                   'AFRIGLOW',
                   style: GoogleFonts.dmSans(
-                      fontSize: 7,
-                      color: Colors.white24,
-                      letterSpacing: 1.5),
+                      fontSize: 7, color: Colors.white24, letterSpacing: 1.5),
                 ),
               ],
             ],
