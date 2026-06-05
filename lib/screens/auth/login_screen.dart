@@ -98,8 +98,10 @@ class _LoginScreenState extends State<LoginScreen>
   @override
   Widget build(BuildContext context) {
     final auth = context.watch<AuthProvider>();
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final cardColor = isDark ? AppColors.darkSurface : Colors.white;
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: isDark ? AppColors.darkBg : AppColors.background,
       body: Column(
         children: [
           // ── Hero ─────────────────────────────────────────────────────────
@@ -112,8 +114,8 @@ class _LoginScreenState extends State<LoginScreen>
               child: FadeTransition(
                 opacity: _fadeAnim,
                 child: Container(
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
+                  decoration: BoxDecoration(
+                    color: cardColor,
                     borderRadius:
                         BorderRadius.vertical(top: Radius.circular(32)),
                   ),
@@ -129,13 +131,13 @@ class _LoginScreenState extends State<LoginScreen>
                               style: GoogleFonts.poppins(
                                   fontSize: 24,
                                   fontWeight: FontWeight.w700,
-                                  color: AppColors.espresso)),
+                                  color: Theme.of(context).colorScheme.onSurface)),
                           const SizedBox(height: 4),
                           Text(
                               'Sign in to continue your skin journey',
                               style: GoogleFonts.poppins(
                                   fontSize: 13,
-                                  color: AppColors.bronze)),
+                                  color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6))),
                           const SizedBox(height: 28),
 
                           // Email
@@ -171,7 +173,7 @@ class _LoginScreenState extends State<LoginScreen>
                                 _obscure
                                     ? Icons.visibility_off_outlined
                                     : Icons.visibility_outlined,
-                                color: AppColors.bronze,
+                                color: isDark ? AppColors.gold : AppColors.bronze,
                                 size: 20,
                               ),
                               onPressed: () =>
@@ -240,18 +242,18 @@ class _LoginScreenState extends State<LoginScreen>
                                 text: TextSpan(
                                   style: GoogleFonts.poppins(
                                       fontSize: 13,
-                                      color: AppColors.espresso),
+                                      color: Theme.of(context).colorScheme.onSurface),
                                   children: [
                                     const TextSpan(text: 'New here? '),
                                     TextSpan(
                                       text: 'Create Account',
                                       style: GoogleFonts.poppins(
-                                          color: AppColors.cocoa,
+                                          color: AppColors.gold,
                                           fontWeight: FontWeight.w700,
                                           decoration:
                                               TextDecoration.underline,
                                           decorationColor:
-                                              AppColors.cocoa),
+                                              AppColors.gold),
                                     ),
                                   ],
                                 ),
