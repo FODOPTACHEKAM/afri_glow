@@ -887,32 +887,137 @@ footer {
 .footer-heart { color: rgba(255,255,255,0.3); }
 
 /* ── Responsive ──────────────────────────────────────────────────────────── */
+
+/* ── Tablet ≤ 1024px ─────────────────────────────────────────────────────── */
 @media (max-width: 1024px) {
-  .hero-container { grid-template-columns: 1fr; gap: 48px; padding-top: 120px; text-align: center; }
+  .hero-container {
+    grid-template-columns: 1fr;
+    gap: 48px;
+    padding-top: 120px;
+    text-align: center;
+  }
   .hero-text { display: flex; flex-direction: column; align-items: center; }
-  .hero-sub { max-width: 100%; }
+  .hero-sub { max-width: 600px; }
   .hero-buttons { justify-content: center; }
   .hero-phone { order: -1; }
+  .phone-frame { width: 230px; }
+  .phone-screen { min-height: 460px; }
   .features-grid { grid-template-columns: repeat(2, 1fr); }
   .steps-row { grid-template-columns: 1fr; gap: 36px; }
   .steps-row::before { display: none; }
+  .download-buttons { gap: 14px; }
+  .dl-btn { min-width: 180px; }
 }
+
+/* ── Mobile ≤ 768px ──────────────────────────────────────────────────────── */
 @media (max-width: 768px) {
+  /* Navigation */
   .nav-links, .nav-cta { display: none; }
   .hamburger { display: flex; }
   .mobile-menu.open { display: flex; }
-  .features-grid { grid-template-columns: 1fr; }
-  .stat-item { padding: 0 20px; }
-  .footer-container { gap: 40px; }
-  .footer-links { gap: 36px; }
-  .download-buttons { flex-direction: column; align-items: center; }
-  .dl-btn { justify-content: center; width: 100%; max-width: 320px; }
+
+  /* Hero */
+  .hero-container { padding-top: 100px; gap: 32px; }
+  .hero-sub { max-width: 100%; font-size: 14px; }
+  .hero-buttons { flex-direction: column; align-items: center; width: 100%; }
+  .btn-primary, .btn-ios, .btn-secondary {
+    width: 100%;
+    max-width: 320px;
+    justify-content: center;
+  }
+  .hero-note { font-size: 11.5px; }
   .hero-scroll-hint { display: none; }
-  .team-card { max-width: 100%; }
-}
-@media (max-width: 480px) {
-  .stats-bar { gap: 0; padding: 20px 12px; }
-  .stat-item { padding: 0 12px; }
+
+  /* Phone mockup */
+  .phone-frame { width: 200px; border-radius: 36px; border-width: 5px; }
+  .phone-screen { min-height: 390px; padding: 0 10px 14px; }
+  .phone-notch { width: 72px; height: 20px; }
+
+  /* Stats */
+  .stats-bar { flex-wrap: wrap; padding: 20px 16px; }
+  .stat-item { padding: 8px 20px; }
   .stat-divider { display: none; }
-  .section-container { padding: 64px 20px; }
+
+  /* Features */
+  .features-grid { grid-template-columns: 1fr; }
+
+  /* Ingredients */
+  .ing-pill { font-size: 12px; padding: 8px 16px; }
+
+  /* Download */
+  .download-inner { padding: 64px 24px; }
+  .download-buttons { flex-direction: column; align-items: center; gap: 12px; }
+  .dl-btn { justify-content: center; width: 100%; max-width: 320px; min-width: unset; }
+
+  /* Team */
+  .team-card { max-width: 100%; }
+
+  /* Footer */
+  .footer-container { gap: 40px; }
+  .footer-links { gap: 32px; }
+}
+
+/* ── Small mobile ≤ 480px ────────────────────────────────────────────────── */
+@media (max-width: 480px) {
+  /* Layout */
+  .section-container { padding: 56px 16px; }
+
+  /* Hero */
+  .hero-container { padding: 88px 16px 48px; gap: 24px; }
+  .hero-badge { font-size: 10px; padding: 5px 12px; margin-bottom: 20px; }
+  .hero-headline { margin-bottom: 16px; }
+  .hero-sub { margin-bottom: 28px; }
+  .btn-primary, .btn-ios, .btn-secondary { padding: 13px 24px; }
+
+  /* Phone mockup */
+  .phone-frame { width: 180px; border-radius: 30px; border-width: 5px; }
+  .phone-screen { min-height: 350px; padding: 0 9px 12px; }
+  .phone-notch { width: 64px; height: 18px; }
+  .ps-score-ring svg { width: 64px; height: 64px; }
+  .ps-score-num { font-size: 13px; }
+  .ps-appname { font-size: 14px; }
+
+  /* Stats */
+  .stats-bar { padding: 16px 12px; }
+  .stat-item { padding: 8px 12px; flex: 1 1 40%; text-align: center; }
+  .stat-number { font-size: 26px; }
+  .stat-label { font-size: 10px; }
+
+  /* Content */
+  .section-sub { font-size: 14px; margin-bottom: 36px; }
+  .feature-card { padding: 24px 20px; }
+  .feature-icon-wrap { width: 44px; height: 44px; margin-bottom: 14px; }
+
+  /* Ingredients */
+  .ingredients-grid { gap: 8px; }
+  .ing-pill { font-size: 11.5px; padding: 7px 14px; }
+
+  /* Download */
+  .download-inner { padding: 48px 16px; }
+  .download-sub { font-size: 14px; margin-bottom: 36px; }
+  .dl-btn { padding: 15px 20px; gap: 12px; }
+  .dl-btn-main { font-size: 14px; }
+  .download-notes { font-size: 11px; gap: 8px; }
+
+  /* Team */
+  .team-card { padding: 14px 16px; gap: 12px; }
+  .team-avatar { width: 40px; height: 40px; font-size: 13px; }
+  .team-info h4 { font-size: 13px; }
+
+  /* Footer */
+  .footer-container { padding: 48px 16px 36px; gap: 32px; }
+  .footer-links { gap: 24px; flex-direction: column; }
+  .footer-bottom { padding: 16px; flex-direction: column; text-align: center; gap: 6px; }
+}
+
+/* ── Very small ≤ 360px ──────────────────────────────────────────────────── */
+@media (max-width: 360px) {
+  .hero-container { padding: 80px 14px 40px; }
+  .hero-badge { font-size: 9.5px; }
+  .btn-primary, .btn-ios, .btn-secondary { padding: 12px 20px; font-size: 13px; }
+  .phone-frame { width: 160px; border-radius: 28px; }
+  .phone-screen { min-height: 310px; }
+  .dl-btn { padding: 13px 18px; }
+  .nav-container { padding: 16px 16px; }
+  .section-container { padding: 48px 14px; }
 }
