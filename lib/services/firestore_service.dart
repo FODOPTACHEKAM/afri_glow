@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import '../models/chat_message.dart';
 import '../models/user_profile.dart';
 import '../models/skin_analysis.dart';
 
@@ -123,5 +124,41 @@ class FirestoreService {
     final doc = await _db.collection('users').doc(uid).get();
     if (!doc.exists) return [];
     return List<String>.from(doc.data()?['favorites'] ?? []);
+  }
+
+  // ── Chat history ───────────────────────────────────────────────────────────
+
+  static Future<void> saveChatMessage(
+      String uid, ChatMessage message) async {
+    await _db
+        .collection('users')
+        .doc(uid)
+        .collection('chat_logs')
+        .add({
+      'text': message.text,
+      'isUser': message.isUser,
+      'timestamp': Timestamp.fromDate(message.timestamp),
+      'quickReplies': message.quickReplies,
+    });
+  }
+
+  static Future<List<Map<String, dynamic>>> getChatHistory(
+      String uid) async {
+    final snap = await _db
+        .collection('users')
+        .doc(uid)
+        .collection('chat_logs')
+        .orderBy('timestamp', descending: false)
+        .limit(50)
+        .get();
+    return snap.docs.map((d) {
+      final data = Map<String, dynamic>.from(d.data());
+      // Convert Timestamp → ISO string so the provider needs no Firestore import.
+      if (data['timestamp'] is Timestamp) {
+        data['timestamp'] =
+            (data['timestamp'] as Timestamp).toDate().toIso8601String();
+      }
+      return data;
+    }).toList();
   }
 }

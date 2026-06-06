@@ -75,6 +75,9 @@ class _LoginScreenState extends State<LoginScreen>
     if (!mounted) return;
     if (data != null && data['isOnboarded'] == true) {
       appProvider.loadFromMap(data);
+      // Fire-and-forget: load subcollection data in parallel.
+      appProvider.loadTodayRoutineFromFirestore(uid);
+      appProvider.loadSkinHistoryFromFirestore(uid);
       _push(const MainScaffold());
     } else {
       _push(const OnboardingScreen());

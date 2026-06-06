@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dart pub *)",
+      "Bash(findstr -i \"flutterfire\\\\|firebase\")",
+      "Bash(where flutterfire *)"
+    ]
+  }
+}

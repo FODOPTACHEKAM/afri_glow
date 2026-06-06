@@ -35,14 +35,15 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   @override
   Widget build(BuildContext context) {
     final auth = context.watch<AuthProvider>();
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: isDark ? AppColors.darkBg : AppColors.background,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios,
-              size: 20, color: AppColors.espresso),
+          icon: Icon(Icons.arrow_back_ios,
+              size: 20, color: Theme.of(context).colorScheme.onSurface),
           onPressed: () => Navigator.pop(context),
         ),
       ),
@@ -98,13 +99,13 @@ class _FormView extends StatelessWidget {
               style: GoogleFonts.poppins(
                   fontSize: 24,
                   fontWeight: FontWeight.w700,
-                  color: AppColors.espresso)),
+                  color: Theme.of(context).colorScheme.onSurface)),
           const SizedBox(height: 8),
           Text(
             'Enter your registered email and we\'ll send you a link to reset your password.',
             style: GoogleFonts.poppins(
                 fontSize: 13,
-                color: AppColors.bronze,
+                color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
                 height: 1.5),
           ),
           const SizedBox(height: 32),
@@ -142,7 +143,7 @@ class _FormView extends StatelessWidget {
               child: Text('Back to Sign In',
                   style: GoogleFonts.poppins(
                       fontSize: 13,
-                      color: AppColors.cocoa,
+                      color: AppColors.gold,
                       fontWeight: FontWeight.w600)),
             ),
           ),
@@ -177,13 +178,15 @@ class _SuccessView extends StatelessWidget {
             style: GoogleFonts.poppins(
                 fontSize: 22,
                 fontWeight: FontWeight.w700,
-                color: AppColors.espresso),
+                color: Theme.of(context).colorScheme.onSurface),
             textAlign: TextAlign.center),
         const SizedBox(height: 12),
         Text(
           'We\'ve sent a password reset link to\n$email',
           style: GoogleFonts.poppins(
-              fontSize: 13, color: AppColors.bronze, height: 1.6),
+              fontSize: 13,
+              color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
+              height: 1.6),
           textAlign: TextAlign.center,
         ),
         const SizedBox(height: 10),
@@ -191,7 +194,7 @@ class _SuccessView extends StatelessWidget {
           'Check your spam folder if you don\'t see it within a few minutes.',
           style: GoogleFonts.poppins(
               fontSize: 12,
-              color: AppColors.bronze.withValues(alpha: 0.7),
+              color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.5),
               height: 1.5),
           textAlign: TextAlign.center,
         ),

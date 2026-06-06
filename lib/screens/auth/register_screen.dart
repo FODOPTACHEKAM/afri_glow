@@ -91,8 +91,10 @@ class _RegisterScreenState extends State<RegisterScreen>
   @override
   Widget build(BuildContext context) {
     final auth = context.watch<AuthProvider>();
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final cardColor = isDark ? AppColors.darkSurface : Colors.white;
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: isDark ? AppColors.darkBg : AppColors.background,
       body: Column(
         children: [
           // ── Hero ─────────────────────────────────────────────────────────
@@ -105,8 +107,8 @@ class _RegisterScreenState extends State<RegisterScreen>
               child: FadeTransition(
                 opacity: _fadeAnim,
                 child: Container(
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
+                  decoration: BoxDecoration(
+                    color: cardColor,
                     borderRadius:
                         BorderRadius.vertical(top: Radius.circular(32)),
                   ),
@@ -122,13 +124,13 @@ class _RegisterScreenState extends State<RegisterScreen>
                               style: GoogleFonts.poppins(
                                   fontSize: 22,
                                   fontWeight: FontWeight.w700,
-                                  color: AppColors.espresso)),
+                                  color: Theme.of(context).colorScheme.onSurface)),
                           const SizedBox(height: 4),
                           Text(
                               'Join thousands of Africans glowing naturally',
                               style: GoogleFonts.poppins(
                                   fontSize: 13,
-                                  color: AppColors.bronze)),
+                                  color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6))),
                           const SizedBox(height: 24),
 
                           // Full name
@@ -180,7 +182,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                                 _obscurePass
                                     ? Icons.visibility_off_outlined
                                     : Icons.visibility_outlined,
-                                color: AppColors.bronze,
+                                color: isDark ? AppColors.gold : AppColors.bronze,
                                 size: 20,
                               ),
                               onPressed: () => setState(
@@ -211,7 +213,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                                 _obscureConfirm
                                     ? Icons.visibility_off_outlined
                                     : Icons.visibility_outlined,
-                                color: AppColors.bronze,
+                                color: isDark ? AppColors.gold : AppColors.bronze,
                                 size: 20,
                               ),
                               onPressed: () => setState(
@@ -259,18 +261,18 @@ class _RegisterScreenState extends State<RegisterScreen>
                                 text: TextSpan(
                                   style: GoogleFonts.poppins(
                                       fontSize: 13,
-                                      color: AppColors.espresso),
+                                      color: Theme.of(context).colorScheme.onSurface),
                                   children: [
                                     const TextSpan(
                                         text: 'Already have an account? '),
                                     TextSpan(
                                       text: 'Sign In',
                                       style: GoogleFonts.poppins(
-                                          color: AppColors.cocoa,
+                                          color: AppColors.gold,
                                           fontWeight: FontWeight.w700,
                                           decoration:
                                               TextDecoration.underline,
-                                          decorationColor: AppColors.cocoa),
+                                          decorationColor: AppColors.gold),
                                     ),
                                   ],
                                 ),

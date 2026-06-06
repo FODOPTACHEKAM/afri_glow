@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -28,8 +29,14 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       final provider = context.read<AppProvider>();
+      final uid = FirebaseAuth.instance.currentUser?.uid;
+      // Load persisted history first; only greet if there truly is none.
+      if (uid != null && provider.messages.isEmpty) {
+        await provider.loadChatHistoryFromFirestore(uid);
+      }
+      if (!mounted) return;
       if (provider.messages.isEmpty) {
         provider.sendUserMessage('Hello');
       }

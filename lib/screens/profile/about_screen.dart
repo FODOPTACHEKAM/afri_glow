@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../theme/app_colors.dart';
 
-// ── Translations ──────────────────────────────────────────────────────────────
+// ── Bilingual strings ─────────────────────────────────────────────────────────
 
 class _T {
   const _T(this.en, this.fr);
@@ -13,23 +13,29 @@ class _T {
   String get(String lang) => lang == 'fr' ? fr : en;
 }
 
-const _tTitle        = _T('About Us',         'À propos');
-const _tBadge        = _T('AfriGlow',          'AfriGlow');
-const _tHeadline     = _T('Meet the\nteam behind\nAfriGlow.',
-                           'Rencontrez\nl\'équipe derrière\nAfriGlow.');
-const _tSubtitle     = _T(
-  'Five students from ICT University building a skincare app that celebrates African beauty ingredients.',
-  'Cinq étudiants de l\'ICT University qui développent une application de soins valorisant les ingrédients beauté africains.',
+const _tTitle        = _T('About AfriGlow',  'À propos');
+const _tTagline      = _T('Glow from the inside out', 'Brillez de l\'intérieur');
+const _tMissionTitle = _T('Our mission',     'Notre mission');
+const _tMission      = _T(
+  'AfriGlow is a personalised skincare companion built for melanin-rich skin. We combine African botanical knowledge, AI-powered recommendations, and daily habit tracking to help every African achieve their healthiest glow.',
+  'AfriGlow est un compagnon de soins personnalisé conçu pour les peaux riches en mélanine. Nous combinons la connaissance botanique africaine, des recommandations IA et un suivi quotidien pour aider chaque Africain à rayonner.',
 );
-const _tEngineers    = _T('Engineers',  'Ingénieurs');
-const _tFeatures     = _T('Features',   'Fonctions');
-const _tAmbition     = _T('Ambition',   'Ambition');
-const _tTeamLabel    = _T('THE TEAM',   'L\'ÉQUIPE');
-const _tMembers      = _T('members',    'membres');
-const _tSendMessage  = _T('Send message', 'Envoyer un message');
-const _tCopied       = _T('Email copied to clipboard', 'E-mail copié dans le presse-papiers');
+const _tTeamTitle    = _T('Meet the team',   'Rencontrez l\'équipe');
+const _tTeamSub      = _T(
+  '5 people building the future of African skincare',
+  '5 personnes construisant l\'avenir des soins africains',
+);
+const _tPrivacy      = _T('Privacy policy',  'Confidentialité');
+const _tTerms        = _T('Terms of use',    'Conditions');
+const _tContact      = _T('Contact us',      'Contactez-nous');
+const _tFooter       = _T('© 2026 AfriGlow. All rights reserved.',
+                           '© 2026 AfriGlow. Tous droits réservés.');
+const _tMadeWith     = _T('Made with love in Africa 🌍',
+                           'Fait avec amour en Afrique 🌍');
+const _tCopied       = _T('Email copied to clipboard',
+                           'E-mail copié dans le presse-papiers');
 
-// ── Team data ────────────────────────────────────────────────────────────────
+// ── Team data ─────────────────────────────────────────────────────────────────
 
 class _Member {
   const _Member({
@@ -39,7 +45,6 @@ class _Member {
     required this.roleFr,
     required this.bioEn,
     required this.bioFr,
-    required this.tags,
     this.email,
     this.photoAsset,
   });
@@ -50,7 +55,6 @@ class _Member {
   final String roleFr;
   final String bioEn;
   final String bioFr;
-  final List<String> tags;
   final String? email;
   final String? photoAsset;
 
@@ -66,18 +70,18 @@ const _team = [
     roleFr:     'Scrum Master · DevOps',
     bioEn:      'Not only a developer but an athlete.',
     bioFr:      'Pas seulement développeur, mais aussi athlète.',
-    tags:       ['Flutter', 'Firebase', 'DevOps', 'Scrum', 'React', 'Node.js'],
     email:      'fodop.jordan@ictuniversity.edu.cm',
-    photoAsset: 'assets/images/team/ivan.jpg',
+    photoAsset: 'assets/images/team/ivan.png',
   ),
   _Member(
-    nameEn:   'Team Member 2',
-    initials: 'M2',
-    roleEn:   'Coming soon',
-    roleFr:   'Bientôt',
-    bioEn:    'Details will be added soon.',
-    bioFr:    'Les détails seront ajoutés bientôt.',
-    tags:     [],
+    nameEn:     'Arielle Enow Kendre',
+    initials:   'AK',
+    roleEn:     'Software Engineer',
+    roleFr:     'Ingénieure Logiciel',
+    bioEn:      'Passionate about building impactful digital solutions.',
+    bioFr:      'Passionnée par la création de solutions numériques à fort impact.',
+    email:      'arielle.kendre@ictuniversity.edu.cm',
+    photoAsset: 'assets/images/team/arielle.png',
   ),
   _Member(
     nameEn:   'Team Member 3',
@@ -86,7 +90,6 @@ const _team = [
     roleFr:   'Bientôt',
     bioEn:    'Details will be added soon.',
     bioFr:    'Les détails seront ajoutés bientôt.',
-    tags:     [],
   ),
   _Member(
     nameEn:   'Team Member 4',
@@ -95,7 +98,6 @@ const _team = [
     roleFr:   'Bientôt',
     bioEn:    'Details will be added soon.',
     bioFr:    'Les détails seront ajoutés bientôt.',
-    tags:     [],
   ),
   _Member(
     nameEn:   'Team Member 5',
@@ -104,11 +106,26 @@ const _team = [
     roleFr:   'Bientôt',
     bioEn:    'Details will be added soon.',
     bioFr:    'Les détails seront ajoutés bientôt.',
-    tags:     [],
   ),
 ];
 
-// ── Screen ───────────────────────────────────────────────────────────────────
+// Per-member avatar palette (matches the HTML mockup colours)
+const _avatarBg = [
+  Color(0xFFFAECE7), // Ivan      — warm orange tint
+  Color(0xFFE1F5EE), // Arielle   — mint green tint
+  Color(0xFFEEEDFE), // Member 3  — lavender tint
+  Color(0xFFE6F1FB), // Member 4  — sky blue tint
+  Color(0xFFEAF3DE), // Member 5  — soft green tint
+];
+const _avatarFg = [
+  Color(0xFF8B3A0F),
+  Color(0xFF1A6B4A),
+  Color(0xFF4B3F9E),
+  Color(0xFF1A5C8B),
+  Color(0xFF3A6B1A),
+];
+
+// ── Screen ────────────────────────────────────────────────────────────────────
 
 class AboutScreen extends StatefulWidget {
   const AboutScreen({super.key});
@@ -128,130 +145,145 @@ class _AboutScreenState extends State<AboutScreen> {
       await launchUrl(uri);
     } else {
       await Clipboard.setData(ClipboardData(text: email));
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(_tCopied.get(_lang),
-                style: GoogleFonts.poppins(fontSize: 13)),
-            behavior: SnackBarBehavior.floating,
-            backgroundColor: AppColors.espresso,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          ),
-        );
-      }
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(_tCopied.get(_lang),
+              style: GoogleFonts.poppins(fontSize: 13)),
+          behavior: SnackBarBehavior.floating,
+          backgroundColor: AppColors.espresso,
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10)),
+        ),
+      );
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    final bgColor      = isDark ? AppColors.darkBg   : AppColors.background;
-    final surfaceColor = isDark ? AppColors.darkCard  : Colors.white;
-    final borderColor  = isDark ? AppColors.darkDivider : const Color(0xFFEDE5D8);
-    final textPrimary  = isDark ? Colors.white        : AppColors.espresso;
-    final textSecondary = isDark ? Colors.white60     : AppColors.bronze;
+    final isDark      = Theme.of(context).brightness == Brightness.dark;
+    final bgColor     = isDark ? AppColors.darkBg     : const Color(0xFFFFF9F6);
+    final cardColor   = isDark ? AppColors.darkCard    : Colors.white;
+    final borderColor = isDark ? AppColors.darkDivider : const Color(0xFFD3D1C7);
+    final textPrimary = isDark ? Colors.white          : const Color(0xFF2C2C2A);
+    final textBrown   = isDark ? AppColors.gold        : const Color(0xFF8B3A0F);
+    final textRole    = isDark ? AppColors.accentGold  : const Color(0xFFC45E1A);
+    final textMuted   = isDark ? Colors.white60        : const Color(0xFF888780);
 
     return Scaffold(
       backgroundColor: bgColor,
-      body: CustomScrollView(
-        slivers: [
-          // ── App bar with language toggle ────────────────────────
-          SliverAppBar(
-            pinned: true,
-            backgroundColor: bgColor,
-            elevation: 0,
-            surfaceTintColor: Colors.transparent,
-            leading: IconButton(
-              icon: const Icon(Icons.arrow_back_ios_new, size: 18),
-              onPressed: () => Navigator.pop(context),
-              color: textPrimary,
+      appBar: AppBar(
+        backgroundColor: isDark ? AppColors.darkCard : const Color(0xFF5A2D16),
+        elevation: 0,
+        surfaceTintColor: Colors.transparent,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios_new,
+              size: 18, color: Colors.white),
+          onPressed: () => Navigator.pop(context),
+        ),
+        title: AnimatedSwitcher(
+          duration: const Duration(milliseconds: 250),
+          child: Text(
+            _tTitle.get(_lang),
+            key: ValueKey('title-$_lang'),
+            style: GoogleFonts.poppins(
+                fontSize: 15,
+                fontWeight: FontWeight.w500,
+                color: Colors.white),
+          ),
+        ),
+        centerTitle: true,
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 12),
+            child: _LangToggle(lang: _lang, onToggle: _toggleLang),
+          ),
+        ],
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            // ── App hero ──────────────────────────────────────────
+            _AppHero(lang: _lang, isDark: isDark,
+                textBrown: textBrown, textMuted: textMuted, textRole: textRole),
+
+            // ── Mission card ──────────────────────────────────────
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 0, 20, 16),
+              child: _MissionCard(lang: _lang, isDark: isDark,
+                  titleColor: textBrown, textColor: textMuted),
             ),
-            title: AnimatedSwitcher(
-              duration: const Duration(milliseconds: 300),
-              child: Text(
-                _tTitle.get(_lang),
-                key: ValueKey(_lang),
-                style: GoogleFonts.poppins(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w600,
-                    color: textPrimary),
-              ),
-            ),
-            centerTitle: true,
-            actions: [
-              Padding(
-                padding: const EdgeInsets.only(right: 12),
-                child: _LangToggle(
-                  lang: _lang,
-                  onToggle: _toggleLang,
+
+            // ── Info chips ────────────────────────────────────────
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: _InfoChipsRow(
                   borderColor: borderColor,
-                  textPrimary: textPrimary,
-                ),
-              ),
-            ],
-          ),
+                  iconColor: textRole,
+                  textColor: textMuted),
+            ),
 
-          // ── Hero banner ────────────────────────────────────────
-          SliverToBoxAdapter(
-            child: _HeroBanner(lang: _lang),
-          ),
-
-          // ── Team header ────────────────────────────────────────
-          SliverToBoxAdapter(
-            child: Padding(
+            // ── Team header ───────────────────────────────────────
+            Padding(
               padding: const EdgeInsets.fromLTRB(20, 24, 20, 4),
-              child: Row(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(width: 3, height: 18, color: AppColors.gold),
-                  const SizedBox(width: 10),
                   AnimatedSwitcher(
                     duration: const Duration(milliseconds: 250),
                     child: Text(
-                      _tTeamLabel.get(_lang),
-                      key: ValueKey('team-$_lang'),
-                      style: GoogleFonts.dmSans(
-                          fontSize: 11,
-                          fontWeight: FontWeight.w600,
-                          letterSpacing: 1.8,
-                          color: textSecondary),
+                      _tTeamTitle.get(_lang),
+                      key: ValueKey('tt-$_lang'),
+                      style: GoogleFonts.poppins(
+                          fontSize: 17,
+                          fontWeight: FontWeight.w500,
+                          color: textBrown),
                     ),
                   ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                      child: Divider(color: borderColor, thickness: 0.5)),
-                  const SizedBox(width: 8),
-                  Text('${_team.length} ${_tMembers.get(_lang)}',
-                      style: GoogleFonts.dmSans(
-                          fontSize: 10.5, color: textSecondary)),
+                  const SizedBox(height: 4),
+                  AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 250),
+                    child: Text(
+                      _tTeamSub.get(_lang),
+                      key: ValueKey('ts-$_lang'),
+                      style: GoogleFonts.poppins(
+                          fontSize: 12, color: textMuted, height: 1.5),
+                    ),
+                  ),
                 ],
               ),
             ),
-          ),
 
-          // ── Member cards ───────────────────────────────────────
-          SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (context, i) => Padding(
-                padding: EdgeInsets.fromLTRB(
-                    20, i == 0 ? 14 : 12, 20,
-                    i == _team.length - 1 ? 40 : 0),
-                child: _MemberCard(
-                  member: _team[i],
-                  lang: _lang,
-                  surfaceColor: surfaceColor,
-                  borderColor: borderColor,
-                  textPrimary: textPrimary,
-                  textSecondary: textSecondary,
-                  onEmail: _team[i].email != null
-                      ? () => _launchEmail(_team[i].email!)
-                      : null,
-                ),
+            // ── Member cards ──────────────────────────────────────
+            ...List.generate(_team.length, (i) => Padding(
+              padding: EdgeInsets.fromLTRB(
+                  20, i == 0 ? 12 : 8, 20,
+                  i == _team.length - 1 ? 0 : 0),
+              child: _MemberCard(
+                member:      _team[i],
+                index:       i,
+                lang:        _lang,
+                cardColor:   cardColor,
+                borderColor: borderColor,
+                textPrimary: textPrimary,
+                textRole:    textRole,
+                textMuted:   textMuted,
+                onEmail:     _team[i].email != null
+                    ? () => _launchEmail(_team[i].email!)
+                    : null,
               ),
-              childCount: _team.length,
+            )),
+
+            // ── Footer ────────────────────────────────────────────
+            _Footer(
+              lang:        _lang,
+              borderColor: borderColor,
+              textRole:    textRole,
+              textMuted:   textMuted,
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -260,48 +292,41 @@ class _AboutScreenState extends State<AboutScreen> {
 // ── Language toggle pill ──────────────────────────────────────────────────────
 
 class _LangToggle extends StatelessWidget {
-  const _LangToggle({
-    required this.lang,
-    required this.onToggle,
-    required this.borderColor,
-    required this.textPrimary,
-  });
-
+  const _LangToggle({required this.lang, required this.onToggle});
   final String lang;
   final VoidCallback onToggle;
-  final Color borderColor;
-  final Color textPrimary;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onToggle,
       child: Container(
-        height: 32,
+        height: 30,
         padding: const EdgeInsets.all(3),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(100),
-          border: Border.all(color: borderColor),
+          border: Border.all(color: Colors.white30),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: ['en', 'fr'].map((code) {
             final active = lang == code;
             return AnimatedContainer(
-              duration: const Duration(milliseconds: 220),
+              duration: const Duration(milliseconds: 200),
               curve: Curves.easeInOut,
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+              padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 2),
               decoration: BoxDecoration(
-                color: active ? AppColors.espresso : Colors.transparent,
+                color: active ? Colors.white : Colors.transparent,
                 borderRadius: BorderRadius.circular(100),
               ),
               child: Text(
                 code.toUpperCase(),
-                style: GoogleFonts.dmSans(
-                  fontSize: 11,
+                style: GoogleFonts.poppins(
+                  fontSize: 10,
                   fontWeight: FontWeight.w600,
-                  letterSpacing: 0.5,
-                  color: active ? Colors.white : textPrimary.withValues(alpha: 0.4),
+                  color: active
+                      ? const Color(0xFF5A2D16)
+                      : Colors.white54,
                 ),
               ),
             );
@@ -312,136 +337,189 @@ class _LangToggle extends StatelessWidget {
   }
 }
 
-// ── Hero banner ───────────────────────────────────────────────────────────────
+// ── App hero ──────────────────────────────────────────────────────────────────
 
-class _HeroBanner extends StatelessWidget {
-  const _HeroBanner({required this.lang});
+class _AppHero extends StatelessWidget {
+  const _AppHero({
+    required this.lang,
+    required this.isDark,
+    required this.textBrown,
+    required this.textMuted,
+    required this.textRole,
+  });
 
   final String lang;
+  final bool isDark;
+  final Color textBrown;
+  final Color textMuted;
+  final Color textRole;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.fromLTRB(20, 8, 20, 0),
-      padding: const EdgeInsets.fromLTRB(24, 28, 24, 28),
-      decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [Color(0xFF3D1F0E), Color(0xFF1A0D05)],
-        ),
-        borderRadius: BorderRadius.circular(24),
-      ),
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 28),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Badge + year
-          Row(
-            children: [
-              Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                decoration: BoxDecoration(
-                  border: Border.all(
-                      color: AppColors.gold.withValues(alpha: 0.6)),
-                  borderRadius: BorderRadius.circular(100),
-                ),
-                child: Text(_tBadge.get(lang),
-                    style: GoogleFonts.dmSans(
-                        fontSize: 10,
-                        color: AppColors.accentGold,
-                        letterSpacing: 1.2)),
-              ),
-              const Spacer(),
-              Text('2025 – 2026',
-                  style: GoogleFonts.dmSans(
-                      fontSize: 10,
-                      color: Colors.white38,
-                      letterSpacing: 0.5)),
-            ],
-          ),
-          const SizedBox(height: 20),
-
-          // Headline
-          AnimatedSwitcher(
-            duration: const Duration(milliseconds: 300),
-            transitionBuilder: (child, anim) =>
-                FadeTransition(opacity: anim, child: child),
-            child: Text(
-              _tHeadline.get(lang),
-              key: ValueKey('headline-$lang'),
-              style: GoogleFonts.cormorantGaramond(
-                  fontSize: 34,
-                  fontWeight: FontWeight.w300,
-                  color: Colors.white,
-                  height: 1.15),
-            ),
-          ),
-          const SizedBox(height: 14),
-
+          // Logo icon box
           Container(
-              width: 36,
-              height: 1,
-              color: AppColors.gold.withValues(alpha: 0.5)),
-          const SizedBox(height: 14),
+            width: 72,
+            height: 72,
+            decoration: BoxDecoration(
+              color: AppColors.espresso,
+              borderRadius: BorderRadius.circular(18),
+            ),
+            child: const Center(
+                child: Text('🌿', style: TextStyle(fontSize: 32))),
+          ),
+          const SizedBox(height: 12),
 
-          // Subtitle
+          Text('AfriGlow',
+              style: GoogleFonts.poppins(
+                  fontSize: 22,
+                  fontWeight: FontWeight.w500,
+                  color: textBrown)),
+          const SizedBox(height: 4),
+
           AnimatedSwitcher(
-            duration: const Duration(milliseconds: 300),
-            transitionBuilder: (child, anim) =>
-                FadeTransition(opacity: anim, child: child),
+            duration: const Duration(milliseconds: 250),
             child: Text(
-              _tSubtitle.get(lang),
-              key: ValueKey('sub-$lang'),
-              style: GoogleFonts.dmSans(
-                  fontSize: 13, height: 1.7, color: Colors.white60),
+              _tTagline.get(lang),
+              key: ValueKey('tag-$lang'),
+              style: GoogleFonts.poppins(fontSize: 13, color: textMuted),
             ),
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 10),
 
-          // Stats
-          Row(
-            children: [
-              _BannerStat(value: '5',   label: _tEngineers.get(lang)),
-              _divider(),
-              _BannerStat(value: '12+', label: _tFeatures.get(lang)),
-              _divider(),
-              _BannerStat(value: '∞',   label: _tAmbition.get(lang)),
-            ],
+          // Version badge
+          Container(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+            decoration: BoxDecoration(
+              color: isDark
+                  ? AppColors.darkCard
+                  : const Color(0xFFFAECE7),
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Text('Version 1.0.0',
+                style: GoogleFonts.poppins(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w500,
+                    color: textRole)),
           ),
         ],
       ),
     );
   }
-
-  Widget _divider() => Container(
-        width: 1,
-        height: 32,
-        color: Colors.white12,
-        margin: const EdgeInsets.symmetric(horizontal: 20),
-      );
 }
 
-class _BannerStat extends StatelessWidget {
-  const _BannerStat({required this.value, required this.label});
+// ── Mission card ──────────────────────────────────────────────────────────────
 
-  final String value;
-  final String label;
+class _MissionCard extends StatelessWidget {
+  const _MissionCard({
+    required this.lang,
+    required this.isDark,
+    required this.titleColor,
+    required this.textColor,
+  });
+
+  final String lang;
+  final bool isDark;
+  final Color titleColor;
+  final Color textColor;
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(value,
-            style: GoogleFonts.cormorantGaramond(
-                fontSize: 26,
-                fontWeight: FontWeight.w300,
-                color: Colors.white)),
-        Text(label.toUpperCase(),
-            style: GoogleFonts.dmSans(
-                fontSize: 9, letterSpacing: 1.2, color: Colors.white38)),
-      ],
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: isDark ? AppColors.darkCard : const Color(0xFFFAECE7),
+        borderRadius: BorderRadius.circular(14),
+        border: isDark
+            ? Border.all(color: AppColors.darkDivider, width: 0.5)
+            : null,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          AnimatedSwitcher(
+            duration: const Duration(milliseconds: 250),
+            child: Text(
+              _tMissionTitle.get(lang),
+              key: ValueKey('mt-$lang'),
+              style: GoogleFonts.poppins(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                  color: titleColor),
+            ),
+          ),
+          const SizedBox(height: 6),
+          AnimatedSwitcher(
+            duration: const Duration(milliseconds: 300),
+            transitionBuilder: (child, anim) =>
+                FadeTransition(opacity: anim, child: child),
+            child: Text(
+              _tMission.get(lang),
+              key: ValueKey('mb-$lang'),
+              style: GoogleFonts.poppins(
+                  fontSize: 12, color: textColor, height: 1.6),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// ── Info chips row ────────────────────────────────────────────────────────────
+
+class _ChipItem {
+  final IconData icon;
+  final String label;
+  const _ChipItem(this.icon, this.label);
+}
+
+class _InfoChipsRow extends StatelessWidget {
+  const _InfoChipsRow({
+    required this.borderColor,
+    required this.iconColor,
+    required this.textColor,
+  });
+
+  final Color borderColor;
+  final Color iconColor;
+  final Color textColor;
+
+  static const _chips = [
+    _ChipItem(Icons.smartphone_rounded,   'Flutter'),
+    _ChipItem(Icons.cloud_done_outlined,  'Firebase'),
+    _ChipItem(Icons.verified_outlined,    'v1.0.0'),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: List.generate(_chips.length, (i) {
+        final chip = _chips[i];
+        return Expanded(
+          child: Container(
+            margin: EdgeInsets.only(right: i < _chips.length - 1 ? 8 : 0),
+            padding: const EdgeInsets.symmetric(vertical: 12),
+            decoration: BoxDecoration(
+              border: Border.all(color: borderColor, width: 0.5),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Column(
+              children: [
+                Icon(chip.icon, size: 20, color: iconColor),
+                const SizedBox(height: 4),
+                Text(chip.label,
+                    style: GoogleFonts.poppins(
+                        fontSize: 11, color: textColor)),
+              ],
+            ),
+          ),
+        );
+      }),
     );
   }
 }
@@ -451,333 +529,252 @@ class _BannerStat extends StatelessWidget {
 class _MemberCard extends StatelessWidget {
   const _MemberCard({
     required this.member,
+    required this.index,
     required this.lang,
-    required this.surfaceColor,
+    required this.cardColor,
     required this.borderColor,
     required this.textPrimary,
-    required this.textSecondary,
+    required this.textRole,
+    required this.textMuted,
     this.onEmail,
   });
 
   final _Member member;
+  final int index;
   final String lang;
-  final Color surfaceColor;
+  final Color cardColor;
   final Color borderColor;
   final Color textPrimary;
-  final Color textSecondary;
+  final Color textRole;
+  final Color textMuted;
   final VoidCallback? onEmail;
 
   @override
   Widget build(BuildContext context) {
-    final isPlaceholder = member.tags.isEmpty;
-
     return Container(
+      padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: surfaceColor,
-        borderRadius: BorderRadius.circular(20),
+        color: cardColor,
         border: Border.all(color: borderColor, width: 0.5),
+        borderRadius: BorderRadius.circular(14),
       ),
-      clipBehavior: Clip.antiAlias,
-      child: IntrinsicHeight(
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            // Photo / avatar
-            SizedBox(
-              width: 100,
-              child: _MemberAvatar(
-                  member: member, isPlaceholder: isPlaceholder),
-            ),
-
-            // Info
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(16, 18, 16, 18),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Role chip
-                    AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 250),
-                      child: Container(
-                        key: ValueKey('role-${member.initials}-$lang'),
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 9, vertical: 3),
-                        decoration: BoxDecoration(
-                          color: isPlaceholder
-                              ? borderColor.withValues(alpha: 0.5)
-                              : AppColors.gold.withValues(alpha: 0.15),
-                          borderRadius: BorderRadius.circular(100),
-                          border: Border.all(
-                            color: isPlaceholder
-                                ? borderColor
-                                : AppColors.gold.withValues(alpha: 0.4),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _SmallAvatar(member: member, index: index),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  member.nameEn,
+                  style: GoogleFonts.poppins(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: textPrimary),
+                ),
+                const SizedBox(height: 2),
+                AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 220),
+                  child: Text(
+                    member.role(lang),
+                    key: ValueKey('r-${member.initials}-$lang'),
+                    style: GoogleFonts.poppins(
+                        fontSize: 11, color: textRole),
+                  ),
+                ),
+                const SizedBox(height: 5),
+                AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 250),
+                  transitionBuilder: (child, anim) =>
+                      FadeTransition(opacity: anim, child: child),
+                  child: Text(
+                    member.bio(lang),
+                    key: ValueKey('b-${member.initials}-$lang'),
+                    style: GoogleFonts.poppins(
+                        fontSize: 11, color: textMuted, height: 1.5),
+                  ),
+                ),
+                if (member.email != null) ...[
+                  const SizedBox(height: 6),
+                  GestureDetector(
+                    onTap: onEmail,
+                    child: Row(
+                      children: [
+                        Icon(Icons.mail_outline_rounded,
+                            size: 12, color: textMuted),
+                        const SizedBox(width: 4),
+                        Expanded(
+                          child: Text(
+                            member.email!,
+                            style: GoogleFonts.poppins(
+                                fontSize: 11, color: textMuted),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
-                        child: Text(
-                          member.role(lang).toUpperCase(),
-                          style: GoogleFonts.dmSans(
-                              fontSize: 8.5,
-                              letterSpacing: 1.1,
-                              fontWeight: FontWeight.w600,
-                              color: isPlaceholder
-                                  ? textSecondary.withValues(alpha: 0.6)
-                                  : AppColors.gold),
-                        ),
-                      ),
+                      ],
                     ),
-                    const SizedBox(height: 8),
-
-                    // Name (same in both languages)
-                    Text(
-                      member.nameEn,
-                      style: GoogleFonts.cormorantGaramond(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w400,
-                          color: isPlaceholder
-                              ? textSecondary.withValues(alpha: 0.5)
-                              : textPrimary,
-                          height: 1.2),
-                    ),
-                    const SizedBox(height: 8),
-
-                    Container(
-                        width: 24,
-                        height: 1,
-                        color: textPrimary
-                            .withValues(alpha: isPlaceholder ? 0.08 : 0.15)),
-                    const SizedBox(height: 8),
-
-                    // Bio
-                    AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 280),
-                      transitionBuilder: (child, anim) =>
-                          FadeTransition(opacity: anim, child: child),
-                      child: Text(
-                        member.bio(lang),
-                        key: ValueKey('bio-${member.initials}-$lang'),
-                        style: GoogleFonts.dmSans(
-                            fontSize: 11.5,
-                            height: 1.65,
-                            color: isPlaceholder
-                                ? textSecondary.withValues(alpha: 0.4)
-                                : textSecondary),
-                      ),
-                    ),
-
-                    // Tags
-                    if (member.tags.isNotEmpty) ...[
-                      const SizedBox(height: 12),
-                      Wrap(
-                        spacing: 5,
-                        runSpacing: 5,
-                        children: member.tags
-                            .map((t) => _Tag(
-                                label: t,
-                                borderColor: borderColor,
-                                textColor: textSecondary))
-                            .toList(),
-                      ),
-                    ],
-
-                    // Email button
-                    if (onEmail != null) ...[
-                      const SizedBox(height: 14),
-                      GestureDetector(
-                        onTap: onEmail,
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(Icons.mail_outline_rounded,
-                                size: 14, color: textSecondary),
-                            const SizedBox(width: 6),
-                            AnimatedSwitcher(
-                              duration: const Duration(milliseconds: 250),
-                              child: Text(
-                                _tSendMessage.get(lang),
-                                key: ValueKey('mail-$lang'),
-                                style: GoogleFonts.dmSans(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w500,
-                                    color: textPrimary,
-                                    decoration: TextDecoration.underline,
-                                    decorationColor:
-                                        textPrimary.withValues(alpha: 0.3)),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ],
-                ),
-              ),
+                  ),
+                ],
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
 }
 
-// ── Member avatar ─────────────────────────────────────────────────────────────
+// ── Small circular avatar ─────────────────────────────────────────────────────
 
-class _MemberAvatar extends StatelessWidget {
-  const _MemberAvatar({
-    required this.member,
-    required this.isPlaceholder,
-  });
-
+class _SmallAvatar extends StatelessWidget {
+  const _SmallAvatar({required this.member, required this.index});
   final _Member member;
-  final bool isPlaceholder;
+  final int index;
+
+  @override
+  Widget build(BuildContext context) {
+    final safeIdx = index.clamp(0, _avatarBg.length - 1);
+    final bg = _avatarBg[safeIdx];
+    final fg = _avatarFg[safeIdx];
+
+    if (member.photoAsset != null) {
+      return ClipOval(
+        child: Image.asset(
+          member.photoAsset!,
+          width: 46,
+          height: 46,
+          fit: BoxFit.cover,
+          errorBuilder: (_, __, ___) =>
+              _InitialsCircle(initials: member.initials, bg: bg, fg: fg),
+        ),
+      );
+    }
+    return _InitialsCircle(initials: member.initials, bg: bg, fg: fg);
+  }
+}
+
+class _InitialsCircle extends StatelessWidget {
+  const _InitialsCircle({
+    required this.initials,
+    required this.bg,
+    required this.fg,
+  });
+  final String initials;
+  final Color bg;
+  final Color fg;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      constraints: const BoxConstraints(minHeight: 180),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: isPlaceholder
-              ? [const Color(0xFF2A2A2A), const Color(0xFF1A1A1A)]
-              : [const Color(0xFF3D1F0E), const Color(0xFF1A0D05)],
+      width: 46,
+      height: 46,
+      decoration: BoxDecoration(shape: BoxShape.circle, color: bg),
+      child: Center(
+        child: Text(
+          initials,
+          style: GoogleFonts.poppins(
+              fontSize: 14, fontWeight: FontWeight.w500, color: fg),
         ),
-      ),
-      child: member.photoAsset != null
-          ? _PhotoWithFallback(
-              assetPath: member.photoAsset!,
-              initials: member.initials,
-            )
-          : _InitialsAvatar(
-              initials: member.initials,
-              isPlaceholder: isPlaceholder,
-            ),
-    );
-  }
-}
-
-class _PhotoWithFallback extends StatelessWidget {
-  const _PhotoWithFallback({
-    required this.assetPath,
-    required this.initials,
-  });
-
-  final String assetPath;
-  final String initials;
-
-  @override
-  Widget build(BuildContext context) {
-    return Image.asset(
-      assetPath,
-      fit: BoxFit.cover,
-      width: double.infinity,
-      height: double.infinity,
-      errorBuilder: (_, __, ___) => _InitialsAvatar(
-        initials: initials,
-        isPlaceholder: false,
       ),
     );
   }
 }
 
-class _InitialsAvatar extends StatelessWidget {
-  const _InitialsAvatar({
-    required this.initials,
-    required this.isPlaceholder,
+// ── Footer ────────────────────────────────────────────────────────────────────
+
+class _Footer extends StatelessWidget {
+  const _Footer({
+    required this.lang,
+    required this.borderColor,
+    required this.textRole,
+    required this.textMuted,
   });
 
-  final String initials;
-  final bool isPlaceholder;
+  final String lang;
+  final Color borderColor;
+  final Color textRole;
+  final Color textMuted;
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      fit: StackFit.expand,
-      children: [
-        Opacity(
-          opacity: 0.06,
-          child: GridView.builder(
-            physics: const NeverScrollableScrollPhysics(),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 3,
-              childAspectRatio: 1,
-            ),
-            itemCount: 40,
-            itemBuilder: (_, __) => const Center(
-              child: Text('✦',
-                  style: TextStyle(color: Colors.white, fontSize: 8)),
-            ),
-          ),
-        ),
-        Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(20, 24, 20, 40),
+      child: Column(
+        children: [
+          Divider(color: borderColor, thickness: 0.5),
+          const SizedBox(height: 16),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              Container(
-                width: 56,
-                height: 56,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                    color: isPlaceholder ? Colors.white12 : AppColors.gold,
-                    width: 1.5,
-                  ),
-                  color: Colors.white.withValues(alpha: 0.06),
-                ),
-                child: Center(
-                  child: Text(
-                    initials,
-                    style: GoogleFonts.cormorantGaramond(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w300,
-                        color: isPlaceholder
-                            ? Colors.white24
-                            : AppColors.accentGold,
-                        letterSpacing: 2),
-                  ),
-                ),
+              _FooterLink(
+                icon: Icons.privacy_tip_outlined,
+                label: _tPrivacy.get(lang),
+                color: textRole,
               ),
-              if (!isPlaceholder) ...[
-                const SizedBox(height: 8),
-                Text(
-                  'AFRIGLOW',
-                  style: GoogleFonts.dmSans(
-                      fontSize: 7, color: Colors.white24, letterSpacing: 1.5),
-                ),
-              ],
+              _FooterLink(
+                icon: Icons.description_outlined,
+                label: _tTerms.get(lang),
+                color: textRole,
+              ),
+              _FooterLink(
+                icon: Icons.mail_outline_rounded,
+                label: _tContact.get(lang),
+                color: textRole,
+              ),
             ],
           ),
-        ),
-      ],
+          const SizedBox(height: 16),
+          AnimatedSwitcher(
+            duration: const Duration(milliseconds: 250),
+            child: Text(
+              _tFooter.get(lang),
+              key: ValueKey('foot-$lang'),
+              style: GoogleFonts.poppins(fontSize: 11, color: textMuted),
+              textAlign: TextAlign.center,
+            ),
+          ),
+          const SizedBox(height: 4),
+          AnimatedSwitcher(
+            duration: const Duration(milliseconds: 250),
+            child: Text(
+              _tMadeWith.get(lang),
+              key: ValueKey('made-$lang'),
+              style: GoogleFonts.poppins(fontSize: 11, color: textMuted),
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
 
-// ── Tag chip ──────────────────────────────────────────────────────────────────
-
-class _Tag extends StatelessWidget {
-  const _Tag({
+class _FooterLink extends StatelessWidget {
+  const _FooterLink({
+    required this.icon,
     required this.label,
-    required this.borderColor,
-    required this.textColor,
+    required this.color,
   });
 
+  final IconData icon;
   final String label;
-  final Color borderColor;
-  final Color textColor;
+  final Color color;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 3),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(100),
-        border: Border.all(color: borderColor),
-      ),
-      child: Text(label,
-          style: GoogleFonts.dmSans(
-              fontSize: 9.5, letterSpacing: 0.5, color: textColor)),
+    return Column(
+      children: [
+        Icon(icon, size: 20, color: color),
+        const SizedBox(height: 4),
+        Text(label,
+            style: GoogleFonts.poppins(fontSize: 11, color: color),
+            textAlign: TextAlign.center,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis),
+      ],
     );
   }
 }

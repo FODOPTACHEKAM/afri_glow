@@ -1,9 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../models/user_profile.dart';
 import '../models/skin_analysis.dart';
 import '../models/chat_message.dart';
 import '../models/product.dart';
 import '../data/products_data.dart';
+import '../services/firestore_service.dart';
 
 class AppProvider extends ChangeNotifier {
   ThemeMode _themeMode = ThemeMode.light;
@@ -73,6 +75,21 @@ class AppProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  // ── Helpers ────────────────────────────────────────────────────────────────
+
+  String? get _uid => FirebaseAuth.instance.currentUser?.uid;
+
+  void _persistRoutineLog() {
+    final uid = _uid;
+    if (uid != null) {
+      FirestoreService.saveRoutineLog(
+              uid, Map<String, bool>.from(_routineChecks), _waterGlasses)
+          .catchError((_) {});
+    }
+  }
+
+  // ── Mutators ───────────────────────────────────────────────────────────────
+
   void toggleFavorite(String productId) {
     if (_favoriteProductIds.contains(productId)) {
       _favoriteProductIds.remove(productId);
@@ -80,22 +97,30 @@ class AppProvider extends ChangeNotifier {
       _favoriteProductIds.add(productId);
     }
     notifyListeners();
+    final uid = _uid;
+    if (uid != null) {
+      FirestoreService.saveFavorites(uid, Set.from(_favoriteProductIds))
+          .catchError((_) {});
+    }
   }
 
   void toggleRoutineStep(String stepId) {
     _routineChecks[stepId] = !(_routineChecks[stepId] ?? false);
     notifyListeners();
+    _persistRoutineLog();
   }
 
   void resetRoutineChecks() {
     _routineChecks.clear();
     notifyListeners();
+    _persistRoutineLog();
   }
 
   void incrementWater() {
     if (_waterGlasses < 12) {
       _waterGlasses++;
       notifyListeners();
+      _persistRoutineLog();
     }
   }
 
@@ -103,25 +128,35 @@ class AppProvider extends ChangeNotifier {
     if (_waterGlasses > 0) {
       _waterGlasses--;
       notifyListeners();
+      _persistRoutineLog();
     }
   }
 
   void sendUserMessage(String text) {
-    _messages.add(ChatMessage(
+    final userMsg = ChatMessage(
       text: text,
       isUser: true,
       timestamp: DateTime.now(),
-    ));
+    );
+    _messages.add(userMsg);
     notifyListeners();
+    final uid = _uid;
+    if (uid != null) {
+      FirestoreService.saveChatMessage(uid, userMsg).catchError((_) {});
+    }
 
     Future.delayed(const Duration(milliseconds: 800), () {
-      _messages.add(ChatMessage(
+      final botMsg = ChatMessage(
         text: _generateResponse(text),
         isUser: false,
         timestamp: DateTime.now(),
         quickReplies: _generateQuickReplies(text),
-      ));
+      );
+      _messages.add(botMsg);
       notifyListeners();
+      if (uid != null) {
+        FirestoreService.saveChatMessage(uid, botMsg).catchError((_) {});
+      }
     });
   }
 
@@ -166,6 +201,57 @@ class AppProvider extends ChangeNotifier {
   }
 
   // ── Firebase integration ───────────────────────────────────────────────────
+
+  /// Load today's routine checks and water count from Firestore.
+  Future<void> loadTodayRoutineFromFirestore(String uid) async {
+    try {
+      final data = await FirestoreService.getTodayRoutineLog(uid);
+      if (data == null) return;
+      final raw = data['checks'];
+      if (raw is Map) {
+        _routineChecks
+          ..clear()
+          ..addAll(raw.map((k, v) => MapEntry(k as String, v as bool)));
+      }
+      _waterGlasses = (data['waterGlasses'] as num?)?.toInt() ?? 0;
+      notifyListeners();
+    } catch (_) {}
+  }
+
+  /// Load chat history from Firestore into the messages list.
+  Future<void> loadChatHistoryFromFirestore(String uid) async {
+    try {
+      final data = await FirestoreService.getChatHistory(uid);
+      if (data.isEmpty) return;
+      _messages.clear();
+      for (final d in data) {
+        _messages.add(ChatMessage(
+          text: d['text'] as String,
+          isUser: d['isUser'] as bool,
+          timestamp: DateTime.parse(d['timestamp'] as String),
+          quickReplies: d['quickReplies'] != null
+              ? List<String>.from(d['quickReplies'] as List)
+              : null,
+        ));
+      }
+      notifyListeners();
+    } catch (_) {}
+  }
+
+  /// Load the last 14 skin scores from Firestore analyses subcollection.
+  Future<void> loadSkinHistoryFromFirestore(String uid) async {
+    try {
+      final analyses = await FirestoreService.getSkinAnalyses(uid);
+      if (analyses.isEmpty) return;
+      final scores = analyses.reversed
+          .map((a) => (a['skinScore'] as num).toDouble())
+          .toList();
+      _skinScoreHistory
+        ..clear()
+        ..addAll(scores);
+      notifyListeners();
+    } catch (_) {}
+  }
 
   /// Populate local state from a Firestore user document map.
   void loadFromMap(Map<String, dynamic> data) {

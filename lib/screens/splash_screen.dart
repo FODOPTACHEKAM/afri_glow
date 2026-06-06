@@ -56,6 +56,9 @@ class _SplashScreenState extends State<SplashScreen>
         if (!mounted) return;
         if (data != null && data['isOnboarded'] == true) {
           appProvider.loadFromMap(data);
+          // Fire-and-forget: load subcollection data in parallel.
+          appProvider.loadTodayRoutineFromFirestore(user.uid);
+          appProvider.loadSkinHistoryFromFirestore(user.uid);
         }
       } catch (_) {
         // Network error: fall through to onboarding check below

@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
@@ -6,6 +7,7 @@ import 'package:provider/provider.dart';
 import '../../theme/app_colors.dart';
 import '../../models/skin_analysis.dart';
 import '../../providers/app_provider.dart';
+import '../../services/firestore_service.dart';
 import 'skin_result_screen.dart';
 
 class SkinScannerScreen extends StatefulWidget {
@@ -165,6 +167,12 @@ class _SkinScannerScreenState extends State<SkinScannerScreen> {
         );
 
     provider.setAnalysis(analysis);
+
+    // Persist result to Firestore so history is available across sessions.
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+    if (uid != null) {
+      FirestoreService.saveSkinAnalysis(uid, analysis).catchError((_) {});
+    }
 
     if (!mounted) return;
     setState(() => _analyzing = false);

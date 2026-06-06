@@ -1,9 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../theme/app_colors.dart';
 import '../../models/user_profile.dart';
 import '../../providers/app_provider.dart';
+import '../../services/firestore_service.dart';
 import '../../services/location_service.dart';
 import '../../services/notification_service.dart';
 import '../../utils/app_images.dart';
@@ -208,6 +210,14 @@ class _SkinQuizScreenState extends State<SkinQuizScreen> {
     );
     context.read<AppProvider>().setUserProfile(profile);
     await NotificationService.scheduleBirthday(dob, profile.name);
+
+    // Persist profile + isOnboarded flag so returning users skip the quiz.
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      await FirestoreService.saveUserProfile(
+          user.uid, profile, user.email ?? '');
+    }
+
     if (!mounted) return;
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(builder: (_) => const MainScaffold()),

@@ -10,6 +10,10 @@ set(BINARY_NAME "flutter_application_skin_wise")
 # versions of CMake.
 cmake_policy(VERSION 3.14...3.25)
 
+# Allow third-party packages (e.g. Firebase C++ SDK) that declare an old
+# cmake_minimum_required version to still configure under CMake 4.x.
+set(CMAKE_POLICY_VERSION_MINIMUM "3.5" CACHE STRING "" FORCE)
+
 # Define build configuration option.
 get_property(IS_MULTICONFIG GLOBAL PROPERTY GENERATOR_IS_MULTI_CONFIG)
 if(IS_MULTICONFIG)
@@ -62,7 +66,13 @@ include(flutter/generated_plugins.cmake)
 # Support files are copied into place next to the executable, so that it can
 # run in place. This is done instead of making a separate bundle (as on Linux)
 # so that building and running from within Visual Studio will work.
-set(BUILD_BUNDLE_DIR "$<TARGET_FILE_DIR:${BINARY_NAME}>")
+# Use a real path (not a generator expression) so cmake_install.cmake
+# can resolve the install prefix without requiring admin privileges.
+if(IS_MULTICONFIG)
+  set(BUILD_BUNDLE_DIR "${CMAKE_CURRENT_BINARY_DIR}/runner/Release")
+else()
+  set(BUILD_BUNDLE_DIR "${CMAKE_CURRENT_BINARY_DIR}/runner/${CMAKE_BUILD_TYPE}")
+endif()
 # Make the "install" step default, as it's required to run.
 set(CMAKE_VS_INCLUDE_INSTALL_TO_DEFAULT_BUILD 1)
 if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
