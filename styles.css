@@ -644,3 +644,179 @@ img { max-width: 100%; }
   color: rgba(255,255,255,0.45);
   line-height: 1.7;
 }
+
+/* ── Ingredients ─────────────────────────────────────────────────────────── */
+#ingredients { background: var(--bg-light); }
+.ingredients-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.ing-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 10px 20px;
+  border: 1px solid rgba(168,101,42,0.2);
+  border-radius: 100px;
+  color: var(--espresso);
+  background: #fff;
+  cursor: default;
+  transition: background var(--transition), border-color var(--transition), transform var(--transition);
+}
+.ing-pill:hover {
+  background: rgba(212,161,74,0.08);
+  border-color: var(--gold);
+  transform: translateY(-2px);
+}
+
+/* ── Download ────────────────────────────────────────────────────────────── */
+.download-section { padding: 0; }
+.download-inner {
+  text-align: center;
+  padding: 100px 24px;
+  max-width: 700px;
+  margin: 0 auto;
+}
+.download-badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold);
+  background: rgba(212,161,74,0.1);
+  border: 1px solid rgba(212,161,74,0.25);
+  border-radius: 100px;
+  padding: 5px 16px;
+  margin-bottom: 24px;
+}
+.download-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(36px, 5.5vw, 58px);
+  font-weight: 300;
+  color: var(--cream);
+  line-height: 1.15;
+  margin-bottom: 16px;
+}
+.download-title em { font-style: italic; color: var(--gold); }
+.download-sub {
+  font-size: 15px;
+  color: rgba(255,255,255,0.45);
+  line-height: 1.7;
+  margin-bottom: 48px;
+}
+.download-buttons {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 28px;
+}
+.dl-btn {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 32px;
+  border-radius: var(--radius-md);
+  min-width: 220px;
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+.dl-btn:hover { transform: translateY(-3px); }
+.dl-android {
+  background: var(--gold);
+  box-shadow: 0 8px 40px rgba(212,161,74,0.4);
+}
+.dl-android:hover { box-shadow: 0 14px 56px rgba(212,161,74,0.55); }
+.dl-ios {
+  background: rgba(255,255,255,0.07);
+  border: 1.5px solid rgba(255,255,255,0.18);
+}
+.dl-ios:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.3); }
+.dl-pc {
+  background: rgba(255,255,255,0.07);
+  border: 1.5px solid rgba(255,255,255,0.18);
+}
+.dl-pc:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.3); }
+.dl-btn-icon {
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+}
+.dl-android .dl-btn-icon { color: var(--espresso); }
+.dl-ios .dl-btn-icon { color: rgba(255,255,255,0.85); }
+.dl-pc .dl-btn-icon { color: rgba(255,255,255,0.75); }
+.dl-btn-text { display: flex; flex-direction: column; align-items: flex-start; }
+.dl-btn-sub {
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.3px;
+}
+.dl-android .dl-btn-sub { color: rgba(46,26,15,0.65); }
+.dl-ios .dl-btn-sub { color: rgba(255,255,255,0.45); }
+.dl-pc .dl-btn-sub { color: rgba(255,255,255,0.45); }
+.dl-btn-main {
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+.dl-android .dl-btn-main { color: var(--espresso); }
+.dl-ios .dl-btn-main { color: #fff; }
+.dl-pc .dl-btn-main { color: #fff; }
+.download-notes {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font-size: 12px;
+  color: rgba(255,255,255,0.3);
+  flex-wrap: wrap;
+}
+.dot-sep { color: rgba(255,255,255,0.15); }
+
+/* ── Team ────────────────────────────────────────────────────────────────── */
+#team { background: var(--bg-light); }
+.team-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: flex-start;
+}
+.team-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: #fff;
+  border: 1px solid rgba(168,101,42,0.1);
+  border-radius: var(--radius-md);
+  padding: 18px 22px;
+  min-width: 260px;
+  flex: 1 1 260px;
+  max-width: 340px;
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+.team-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 36px rgba(46,26,15,0.07);
+}
+.team-avatar {
+  width: 48px; height: 48px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 15px;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+  flex-shrink: 0;
+}
+.team-info h4 {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--espresso);
+  margin-bottom: 3px;
+}
+.team-role {
+  font-size: 11.5px;
+  color: var(--bronze);
+  font-weight: 500;
+}
