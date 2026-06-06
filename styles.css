@@ -1,0 +1,80 @@
+/* ── Variables ──────────────────────────────────────────────────────────── */
+:root {
+  --gold:         #D4A14A;
+  --accent-gold:  #E8C07D;
+  --bronze:       #A8652A;
+  --espresso:     #2E1A0F;
+  --cocoa:        #5A2D16;
+  --cream:        #F4EEE7;
+  --bg:           #6B3212;
+  --bg-light:     #FFF9F6;
+  --bg-section:   #7A3B1C;
+  --text-muted:   #8B7355;
+  --border:       rgba(212,161,74,0.15);
+  --radius-sm:    10px;
+  --radius-md:    16px;
+  --radius-lg:    24px;
+  --radius-xl:    36px;
+  --shadow-gold:  0 0 60px rgba(212,161,74,0.12);
+  --transition:   0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ── Reset ──────────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Poppins', sans-serif;
+  background: var(--bg-light);
+  color: var(--espresso);
+  overflow-x: hidden;
+}
+a { text-decoration: none; color: inherit; }
+ul { list-style: none; }
+img { max-width: 100%; }
+
+/* ── Typography helpers ─────────────────────────────────────────────────── */
+.section-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 2.5px;
+  color: var(--bronze);
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+.section-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(32px, 5vw, 52px);
+  font-weight: 300;
+  line-height: 1.15;
+  color: var(--espresso);
+  margin-bottom: 16px;
+}
+.section-title em {
+  font-style: italic;
+  color: var(--bronze);
+}
+.section-sub {
+  font-size: 15px;
+  color: var(--text-muted);
+  line-height: 1.7;
+  max-width: 520px;
+  margin-bottom: 52px;
+}
+.section-container {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 96px 24px;
+}
+
+/* ── Scroll animations ──────────────────────────────────────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.65s ease, transform 0.65s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal-delay  { transition-delay: 0.12s; }
+.reveal-delay-2 { transition-delay: 0.24s; }
