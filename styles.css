@@ -551,3 +551,96 @@ img { max-width: 100%; }
   height: 40px;
   background: rgba(255,255,255,0.1);
 }
+
+/* ── Features ────────────────────────────────────────────────────────────── */
+#features { background: var(--bg-light); }
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.feature-card {
+  background: #fff;
+  border: 1px solid rgba(168,101,42,0.12);
+  border-radius: var(--radius-lg);
+  padding: 32px 28px;
+  transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+}
+.feature-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 48px rgba(46,26,15,0.08);
+  border-color: rgba(212,161,74,0.3);
+}
+.feature-icon-wrap {
+  width: 52px; height: 52px;
+  border-radius: var(--radius-sm);
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 18px;
+}
+.feature-icon { font-size: 24px; }
+.feature-card h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--espresso);
+  margin-bottom: 10px;
+}
+.feature-card p {
+  font-size: 13.5px;
+  color: var(--text-muted);
+  line-height: 1.7;
+}
+
+/* ── Dark section ────────────────────────────────────────────────────────── */
+.dark-section {
+  background: linear-gradient(160deg, #5C2810 0%, #6B3212 100%);
+}
+.dark-section .section-title {
+  color: var(--cream);
+}
+.dark-section .section-title em {
+  color: var(--accent-gold);
+}
+.dark-section .section-sub {
+  color: rgba(255,255,255,0.45);
+}
+
+/* ── How it works ────────────────────────────────────────────────────────── */
+#how-it-works .section-container { padding-bottom: 80px; }
+.steps-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 48px;
+  position: relative;
+}
+.steps-row::before {
+  content: '';
+  position: absolute;
+  top: 28px;
+  left: calc(33.33% - 24px);
+  right: calc(33.33% - 24px);
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(212,161,74,0.3), transparent);
+}
+.step-item { display: flex; flex-direction: column; gap: 16px; }
+.step-number {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 42px;
+  font-weight: 300;
+  color: rgba(212,161,74,0.25);
+  line-height: 1;
+}
+.step-line {
+  width: 28px; height: 2px;
+  background: var(--gold);
+}
+.step-content h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--cream);
+  margin-bottom: 8px;
+}
+.step-content p {
+  font-size: 13.5px;
+  color: rgba(255,255,255,0.45);
+  line-height: 1.7;
+}
