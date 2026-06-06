@@ -316,6 +316,11 @@ img { max-width: 100%; }
   border-color: rgba(255,255,255,0.5);
   transform: translateY(-2px);
 }
+.btn-coming-soon {
+  opacity: 0.55;
+  cursor: default;
+  pointer-events: none;
+}
 .hero-note {
   font-size: 12px;
   color: rgba(255,255,255,0.35);
@@ -735,6 +740,11 @@ img { max-width: 100%; }
   border: 1.5px solid rgba(255,255,255,0.18);
 }
 .dl-ios:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.3); }
+.dl-coming-soon {
+  opacity: 0.5;
+  cursor: default;
+  pointer-events: none;
+}
 .dl-pc {
   background: rgba(255,255,255,0.07);
   border: 1.5px solid rgba(255,255,255,0.18);
