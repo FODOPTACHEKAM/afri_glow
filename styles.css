@@ -808,6 +808,7 @@ img { max-width: 100%; }
   font-weight: 600;
   font-family: 'Poppins', sans-serif;
   flex-shrink: 0;
+  overflow: hidden;
 }
 .team-info h4 {
   font-size: 13.5px;
