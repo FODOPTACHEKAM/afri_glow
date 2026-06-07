@@ -14,13 +14,13 @@ class DashboardScreen extends StatelessWidget {
     final provider = context.watch<AppProvider>();
     final scores = provider.skinScoreHistory;
     final latestScore = scores.isNotEmpty ? scores.last : 75.0;
-    final routineSteps =
+    final routineSteps = 5;
     final doneSeps = provider.completedStepsToday;
     final routineProgress = (doneSeps / routineSteps).clamp(0.0, 1.0);
 
     return Scaffold(
       appBar: AppBar(
-
+        title: Text('My Dashboard',
             style: GoogleFonts.poppins(fontWeight: FontWeight.w700)),
       ),
       body: SingleChildScrollView(
