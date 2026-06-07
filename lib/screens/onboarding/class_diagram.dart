@@ -14,7 +14,6 @@ class Product {
 }
 
 class SkinAnalysis {
-  int id;
   String skinType;
   double score;
 }
