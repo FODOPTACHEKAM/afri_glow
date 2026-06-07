@@ -831,6 +831,19 @@ img { max-width: 100%; }
   color: var(--bronze);
   font-weight: 500;
 }
+.team-email {
+  display: block;
+  font-size: 11px;
+  color: var(--espresso);
+  opacity: 0.55;
+  margin-top: 2px;
+  text-decoration: none;
+  transition: opacity var(--transition);
+}
+.team-email:hover {
+  opacity: 0.9;
+  text-decoration: underline;
+}
 
 /* ── Footer ──────────────────────────────────────────────────────────────── */
 footer {
