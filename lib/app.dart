@@ -7,7 +7,7 @@ import 'screens/splash_screen.dart';
 import 'screens/auth/login_screen.dart';
 
 class AfriGlowApp extends StatelessWidget {
-  const AfriGlowApp({super.key});.
+  const AfriGlowApp({super.key});
 
   @override
   Widget build(BuildContext context) {
