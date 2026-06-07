@@ -37,10 +37,11 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyAeweldJ7yTcT4bnEClMhYryvwoDNSAs9w',
-    appId: '1:978963949555:android:8cd6151f45cfb29cd5d486',
+    appId: '1:978963949555:android:c3c2f62b23dbc170d5d486',
     messagingSenderId: '978963949555',
     projectId: 'afriglow-skinwise',
     storageBucket: 'afriglow-skinwise.firebasestorage.app',
+    androidClientId: '978963949555-sqhavrf7s1fju6kt4eov830te702pqrd.apps.googleusercontent.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(

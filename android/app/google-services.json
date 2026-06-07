@@ -7,12 +7,17 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:978963949555:android:8cd6151f45cfb29cd5d486",
+        "mobilesdk_app_id": "1:978963949555:android:c3c2f62b23dbc170d5d486",
         "android_client_info": {
-          "package_name": "com.example.flutter_application_skin_wise"
+          "package_name": "com.afriglow.skinwise"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "978963949555-sqhavrf7s1fju6kt4eov830te702pqrd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyAeweldJ7yTcT4bnEClMhYryvwoDNSAs9w"
@@ -20,7 +25,41 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "978963949555-sqhavrf7s1fju6kt4eov830te702pqrd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:978963949555:android:8cd6151f45cfb29cd5d486",
+        "android_client_info": {
+          "package_name": "com.example.flutter_application_skin_wise"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "978963949555-sqhavrf7s1fju6kt4eov830te702pqrd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAeweldJ7yTcT4bnEClMhYryvwoDNSAs9w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "978963949555-sqhavrf7s1fju6kt4eov830te702pqrd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
