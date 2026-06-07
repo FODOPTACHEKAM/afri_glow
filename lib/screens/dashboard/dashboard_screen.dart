@@ -9,7 +9,7 @@ import '../../providers/app_provider.dart';
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});
 
-  @override
+
   Widget build(BuildContext context) {
     final provider = context.watch<AppProvider>();
     final scores = provider.skinScoreHistory;
