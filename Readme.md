@@ -8,3 +8,4 @@ Updates to do
 
 
 Just get ready for the release versions updates
+updated android apk 
