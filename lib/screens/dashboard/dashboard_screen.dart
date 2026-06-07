@@ -11,8 +11,8 @@ class DashboardScreen extends StatelessWidget {
 
 
   Widget build(BuildContext context) {
+    final provider = context.watch<AppProvider>();
 
-    final scores = provider.skinScoreHistory;
     final latestScore = scores.isNotEmpty ? scores.last : 75.0;
     final routineSteps = 5;
     final doneSeps = provider.completedStepsToday;
