@@ -18,7 +18,7 @@ class DashboardScreen extends StatelessWidget {
     final doneSeps = provider.completedStepsToday;
     final routineProgress = (doneSeps / routineSteps).clamp(0.0, 1.0);
 
-    return S
+    return
       appBar: AppBar(
         title: Text('My Dashboard',
             style: GoogleFonts.poppins(fontWeight: FontWeight.w700)),
