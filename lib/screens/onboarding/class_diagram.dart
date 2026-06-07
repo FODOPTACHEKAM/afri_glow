@@ -25,8 +25,3 @@ class BeautyTip {
   String content;
 }
 
-class RoutinePlanner {
-  int id;
-  String routineName;
-  String schedule;
-}
