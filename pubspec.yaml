@@ -1,0 +1,15 @@
+name: afri_glow_app
+description: A Flutter application with API login support.
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=2.18.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  http: ^0.14.0
+
+flutter:
+  uses-material-design: true
