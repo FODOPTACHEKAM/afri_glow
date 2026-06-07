@@ -20,7 +20,7 @@ class DashboardScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('My Dashboard',
+
             style: GoogleFonts.poppins(fontWeight: FontWeight.w700)),
       ),
       body: SingleChildScrollView(
