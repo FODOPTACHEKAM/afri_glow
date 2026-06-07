@@ -14,6 +14,7 @@ class Product {
 }
 
 class SkinAnalysis {
+  int id;
   String skinType;
   double score;
 }
@@ -24,3 +25,8 @@ class BeautyTip {
   String content;
 }
 
+class RoutinePlanner {
+  int id;
+  String routineName;
+  String schedule;
+}
