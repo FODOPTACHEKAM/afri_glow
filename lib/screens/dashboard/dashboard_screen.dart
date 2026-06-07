@@ -17,7 +17,7 @@ class DashboardScreen extends StatelessWidget {
     final routineSteps = 5;
     final doneSeps = provider.completedStepsToday;
     final routineProgress = (doneSeps / routineSteps).clamp(0.0, 1.0);
-
+....
     return Scaffold(
       appBar: AppBar(
         title: Text('My Dashboard',
