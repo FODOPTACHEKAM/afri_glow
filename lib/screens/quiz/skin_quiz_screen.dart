@@ -209,13 +209,18 @@ class _SkinQuizScreenState extends State<SkinQuizScreen> {
       sleepHours: _sleepHours,
     );
     context.read<AppProvider>().setUserProfile(profile);
-    await NotificationService.scheduleBirthday(dob, profile.name);
 
-    // Persist profile + isOnboarded flag so returning users skip the quiz.
+    // Non-critical — notification or Firestore failure must not block navigation.
+    try {
+      await NotificationService.scheduleBirthday(dob, profile.name);
+    } catch (_) {}
+
     final user = FirebaseAuth.instance.currentUser;
     if (user != null) {
-      await FirestoreService.saveUserProfile(
-          user.uid, profile, user.email ?? '');
+      try {
+        await FirestoreService.saveUserProfile(
+            user.uid, profile, user.email ?? '');
+      } catch (_) {}
     }
 
     if (!mounted) return;
