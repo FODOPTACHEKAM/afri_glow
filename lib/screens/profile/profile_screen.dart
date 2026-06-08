@@ -1,11 +1,14 @@
 import 'dart:io';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import '../../theme/app_colors.dart';
 import '../../providers/app_provider.dart';
-import '../../providers/auth_provider.dart';
+import '../../providers/auth_provider.dart' as app_auth;
+import '../../services/firestore_service.dart';
 import '../auth/login_screen.dart';
 import '../onboarding/onboarding_screen.dart';
 import 'about_screen.dart';
@@ -136,14 +139,60 @@ class _ProfileScreenState extends State<ProfileScreen> {
         imageQuality: 85,
         maxWidth: 600,
       );
-      if (picked != null && mounted) {
-        provider.setProfileImagePath(picked.path);
+      if (picked == null || !mounted) return;
+
+      // Show uploading indicator
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Row(children: [
+          const SizedBox(
+              width: 18,
+              height: 18,
+              child: CircularProgressIndicator(
+                  strokeWidth: 2, color: Colors.white)),
+          const SizedBox(width: 12),
+          Text('Uploading photo…', style: GoogleFonts.poppins()),
+        ]),
+        duration: const Duration(seconds: 10),
+        behavior: SnackBarBehavior.floating,
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      ));
+
+      // Update local preview immediately
+      provider.setProfileImagePath(picked.path);
+
+      // Upload to Firebase Storage
+      final uid = FirebaseAuth.instance.currentUser?.uid;
+      if (uid != null) {
+        final ref = FirebaseStorage.instance
+            .ref('profile_images/$uid.jpg');
+        await ref.putFile(
+          File(picked.path),
+          SettableMetadata(contentType: 'image/jpeg'),
+        );
+        final url = await ref.getDownloadURL();
+        await FirestoreService.saveProfileImageUrl(uid, url);
+        if (mounted) provider.setProfileImageUrl(url);
+      }
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('Profile photo updated!',
+              style: GoogleFonts.poppins()),
+          backgroundColor: AppColors.successGreen,
+          behavior: SnackBarBehavior.floating,
+          duration: const Duration(seconds: 2),
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10)),
+        ));
       }
     } catch (_) {
       if (mounted) {
+        ScaffoldMessenger.of(context).hideCurrentSnackBar();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Could not access camera / gallery',
+            content: Text('Could not update photo. Try again.',
                 style: GoogleFonts.poppins()),
             backgroundColor: AppColors.errorRed,
             behavior: SnackBarBehavior.floating,
@@ -437,7 +486,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   side: BorderSide(color: Colors.red.shade300),
                 ),
                 onPressed: () async {
-                  final authProvider = context.read<AuthProvider>();
+                  final authProvider = context.read<app_auth.AuthProvider>();
                   final appProvider = context.read<AppProvider>();
                   final navigator = Navigator.of(context);
                   final confirmed = await showDialog<bool>(

@@ -20,6 +20,7 @@ class AppProvider extends ChangeNotifier {
   int _routineStreak = 0;
   final List<double> _skinScoreHistory = [68, 71, 70, 74, 75, 73, 77];
   String? _profileImagePath;
+  String? _profileImageUrl;
 
   // — Getters —
   ThemeMode get themeMode => _themeMode;
@@ -32,6 +33,37 @@ class AppProvider extends ChangeNotifier {
   int get routineStreak => _routineStreak;
   List<double> get skinScoreHistory => List.unmodifiable(_skinScoreHistory);
   String? get profileImagePath => _profileImagePath;
+  String? get profileImageUrl => _profileImageUrl;
+
+  /// Score derived from quiz answers — shown before the user does a scan.
+  double get quizBasedScore {
+    final profile = _userProfile;
+    if (profile == null) return 50.0;
+    double score = 62.0;
+    // Sleep quality
+    if (profile.sleepHours >= 7 && profile.sleepHours <= 9) {
+      score += 8;
+    } else if (profile.sleepHours >= 6) {
+      score += 4;
+    }
+    // Hydration
+    if (profile.waterIntake >= 8) {
+      score += 7;
+    } else if (profile.waterIntake >= 6) {
+      score += 4;
+    }
+    // Skin type baseline
+    if (profile.skinType == 'normal') {
+      score += 5;
+    } else if (profile.skinType == 'combination') {
+      score += 3;
+    } else if (profile.skinType == 'oily' || profile.skinType == 'dry') {
+      score += 2;
+    }
+    // Each active concern reduces score
+    score -= profile.skinConcerns.length * 3.5;
+    return score.clamp(40.0, 85.0);
+  }
 
   List<Product> get favoriteProducts => allProducts
       .where((p) => _favoriteProductIds.contains(p.id))
@@ -60,6 +92,11 @@ class AppProvider extends ChangeNotifier {
 
   void setProfileImagePath(String? path) {
     _profileImagePath = path;
+    notifyListeners();
+  }
+
+  void setProfileImageUrl(String? url) {
+    _profileImageUrl = url;
     notifyListeners();
   }
 
@@ -271,6 +308,8 @@ class AppProvider extends ChangeNotifier {
     _favoriteProductIds
       ..clear()
       ..addAll(List<String>.from(data['favorites'] ?? <String>[]));
+    final url = data['profileImageUrl'] as String?;
+    if (url != null && url.isNotEmpty) _profileImageUrl = url;
 
     notifyListeners();
   }
@@ -289,6 +328,7 @@ class AppProvider extends ChangeNotifier {
       ..clear()
       ..addAll([68, 71, 70, 74, 75, 73, 77]);
     _profileImagePath = null;
+    _profileImageUrl = null;
     _navIndex = 0;
     notifyListeners();
   }

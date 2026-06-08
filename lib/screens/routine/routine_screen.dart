@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../theme/app_colors.dart';
 import '../../providers/app_provider.dart';
 import '../../data/routines_data.dart';
 import '../../models/routine.dart';
+import '../../services/notification_service.dart';
 
 class RoutineScreen extends StatefulWidget {
   const RoutineScreen({super.key});
@@ -16,11 +18,176 @@ class RoutineScreen extends StatefulWidget {
 class _RoutineScreenState extends State<RoutineScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabs;
+  TimeOfDay _morningTime = const TimeOfDay(hour: 7, minute: 0);
+  TimeOfDay _eveningTime = const TimeOfDay(hour: 20, minute: 0);
+  bool _morningEnabled = true;
+  bool _eveningEnabled = true;
 
   @override
   void initState() {
     super.initState();
     _tabs = TabController(length: 3, vsync: this);
+    _loadReminderPrefs();
+  }
+
+  Future<void> _loadReminderPrefs() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _morningTime = TimeOfDay(
+        hour: prefs.getInt('routine_morning_hour') ?? 7,
+        minute: prefs.getInt('routine_morning_minute') ?? 0,
+      );
+      _eveningTime = TimeOfDay(
+        hour: prefs.getInt('routine_evening_hour') ?? 20,
+        minute: prefs.getInt('routine_evening_minute') ?? 0,
+      );
+      _morningEnabled = prefs.getBool('routine_morning_enabled') ?? true;
+      _eveningEnabled = prefs.getBool('routine_evening_enabled') ?? true;
+    });
+  }
+
+  Future<void> _saveReminderPrefs() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('routine_morning_hour', _morningTime.hour);
+    await prefs.setInt('routine_morning_minute', _morningTime.minute);
+    await prefs.setInt('routine_evening_hour', _eveningTime.hour);
+    await prefs.setInt('routine_evening_minute', _eveningTime.minute);
+    await prefs.setBool('routine_morning_enabled', _morningEnabled);
+    await prefs.setBool('routine_evening_enabled', _eveningEnabled);
+
+    if (_morningEnabled) {
+      await NotificationService.scheduleMorningReminder(
+          _morningTime.hour, _morningTime.minute);
+    } else {
+      await NotificationService.cancelMorningReminder();
+    }
+    if (_eveningEnabled) {
+      await NotificationService.scheduleEveningReminder(
+          _eveningTime.hour, _eveningTime.minute);
+    } else {
+      await NotificationService.cancelEveningReminder();
+    }
+  }
+
+  void _showReminderSheet() {
+    // Temporary state inside sheet
+    TimeOfDay tempMorning = _morningTime;
+    TimeOfDay tempEvening = _eveningTime;
+    bool tempMorningEnabled = _morningEnabled;
+    bool tempEveningEnabled = _eveningEnabled;
+
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(24))),
+      builder: (ctx) => StatefulBuilder(
+        builder: (ctx, setSheetState) => SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(24, 16, 24, 24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Center(
+                  child: Container(
+                    width: 40, height: 4,
+                    decoration: BoxDecoration(
+                        color: Colors.grey.withAlpha(80),
+                        borderRadius: BorderRadius.circular(2)),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                Text('Routine Reminders',
+                    style: GoogleFonts.poppins(
+                        fontSize: 18, fontWeight: FontWeight.w700)),
+                const SizedBox(height: 4),
+                Text('Set daily reminders to follow your skincare routine.',
+                    style: GoogleFonts.poppins(
+                        fontSize: 13, color: AppColors.warmBrown)),
+                const SizedBox(height: 24),
+                // Morning
+                _ReminderRow(
+                  icon: '☀️',
+                  label: 'Morning Routine',
+                  time: tempMorning,
+                  enabled: tempMorningEnabled,
+                  onToggle: (v) =>
+                      setSheetState(() => tempMorningEnabled = v),
+                  onTap: () async {
+                    final picked = await showTimePicker(
+                      context: ctx,
+                      initialTime: tempMorning,
+                      helpText: 'Morning reminder time',
+                    );
+                    if (picked != null) {
+                      setSheetState(() => tempMorning = picked);
+                    }
+                  },
+                ),
+                const SizedBox(height: 16),
+                // Evening
+                _ReminderRow(
+                  icon: '🌙',
+                  label: 'Evening Routine',
+                  time: tempEvening,
+                  enabled: tempEveningEnabled,
+                  onToggle: (v) =>
+                      setSheetState(() => tempEveningEnabled = v),
+                  onTap: () async {
+                    final picked = await showTimePicker(
+                      context: ctx,
+                      initialTime: tempEvening,
+                      helpText: 'Evening reminder time',
+                    );
+                    if (picked != null) {
+                      setSheetState(() => tempEvening = picked);
+                    }
+                  },
+                ),
+                const SizedBox(height: 28),
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.deepGreen,
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(14)),
+                    ),
+                    onPressed: () async {
+                      setState(() {
+                        _morningTime = tempMorning;
+                        _eveningTime = tempEvening;
+                        _morningEnabled = tempMorningEnabled;
+                        _eveningEnabled = tempEveningEnabled;
+                      });
+                      await _saveReminderPrefs();
+                      if (!ctx.mounted) return;
+                      Navigator.pop(ctx);
+                      if (!mounted) return;
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text('Reminders saved!',
+                            style: GoogleFonts.poppins()),
+                        backgroundColor: AppColors.successGreen,
+                        behavior: SnackBarBehavior.floating,
+                        duration: const Duration(seconds: 2),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10)),
+                      ));
+                    },
+                    child: Text('Save Reminders',
+                        style: GoogleFonts.poppins(
+                            fontWeight: FontWeight.w600, fontSize: 15)),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
   }
 
   @override
@@ -45,6 +212,13 @@ class _RoutineScreenState extends State<RoutineScreen>
       appBar: AppBar(
         title: Text('My Routine',
             style: GoogleFonts.poppins(fontWeight: FontWeight.w700)),
+        actions: [
+          IconButton(
+            tooltip: 'Set Reminders',
+            icon: const Icon(Icons.alarm_outlined, color: Colors.white),
+            onPressed: _showReminderSheet,
+          ),
+        ],
         bottom: TabBar(
           controller: _tabs,
           labelStyle:
@@ -222,6 +396,81 @@ class _RoutineTab extends StatelessWidget {
                         color: AppColors.warmBrown, fontSize: 13)),
               ),
             ),
+        ],
+      ),
+    );
+  }
+}
+
+// ── Reminder row widget ────────────────────────────────────────────────────
+
+class _ReminderRow extends StatelessWidget {
+  final String icon;
+  final String label;
+  final TimeOfDay time;
+  final bool enabled;
+  final ValueChanged<bool> onToggle;
+  final VoidCallback onTap;
+
+  const _ReminderRow({
+    required this.icon,
+    required this.label,
+    required this.time,
+    required this.enabled,
+    required this.onToggle,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final timeStr = time.format(context);
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+      decoration: BoxDecoration(
+        color: enabled
+            ? AppColors.deepGreen.withAlpha(10)
+            : Colors.grey.withAlpha(10),
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(
+          color: enabled
+              ? AppColors.deepGreen.withAlpha(50)
+              : Colors.grey.withAlpha(40),
+        ),
+      ),
+      child: Row(
+        children: [
+          Text(icon, style: const TextStyle(fontSize: 22)),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(label,
+                    style: GoogleFonts.poppins(
+                        fontWeight: FontWeight.w600, fontSize: 14)),
+                GestureDetector(
+                  onTap: enabled ? onTap : null,
+                  child: Text(
+                    enabled ? timeStr : 'Off',
+                    style: GoogleFonts.poppins(
+                        fontSize: 13,
+                        color: enabled
+                            ? AppColors.gold
+                            : AppColors.warmBrown,
+                        fontWeight: FontWeight.w600,
+                        decoration:
+                            enabled ? TextDecoration.underline : null),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Switch(
+            value: enabled,
+            onChanged: onToggle,
+            activeThumbColor: AppColors.deepGreen,
+          activeTrackColor: AppColors.deepGreen.withAlpha(100),
+          ),
         ],
       ),
     );

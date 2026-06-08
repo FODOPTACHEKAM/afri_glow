@@ -123,7 +123,7 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                       mainAxisSpacing: 12,
                       crossAxisSpacing: 12,
                       childAspectRatio:
-                          Responsive.cardAspect(context, phone: 0.72),
+                          Responsive.cardAspect(context, phone: 0.65),
                     ),
                     itemCount: products.length,
                     itemBuilder: (_, i) => _ProductCard(
@@ -159,87 +159,103 @@ class _ProductCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Product image placeholder
-            Stack(
-              children: [
-                Container(
-                  height: 110,
-                  decoration: BoxDecoration(
-                    color: AppColors.deepGreen.withAlpha(12),
-                    borderRadius: const BorderRadius.vertical(
-                        top: Radius.circular(16)),
+            // Product image — proportional, never overflows
+            Expanded(
+              flex: 5,
+              child: Stack(
+                fit: StackFit.expand,
+                children: [
+                  Container(
+                    decoration: const BoxDecoration(
+                      color: Color(0xFFEEF4EE),
+                      borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(16)),
+                    ),
+                    child: Center(
+                      child: Text(product.emoji,
+                          style: const TextStyle(fontSize: 48)),
+                    ),
                   ),
-                  child: Center(
-                    child: Text(product.emoji,
-                        style: const TextStyle(fontSize: 52)),
-                  ),
-                ),
-                Positioned(
-                  top: 8,
-                  right: 8,
-                  child: GestureDetector(
-                    onTap: () =>
-                        provider.toggleFavorite(product.id),
-                    child: Container(
-                      padding: const EdgeInsets.all(6),
-                      decoration: BoxDecoration(
-                        color: Colors.white.withAlpha(220),
-                        shape: BoxShape.circle,
-                      ),
-                      child: Icon(
-                        isFav
-                            ? Icons.favorite
-                            : Icons.favorite_border,
-                        size: 18,
-                        color: isFav
-                            ? AppColors.errorRed
-                            : AppColors.warmBrown,
+                  Positioned(
+                    top: 8,
+                    right: 8,
+                    child: GestureDetector(
+                      onTap: () => provider.toggleFavorite(product.id),
+                      child: Container(
+                        padding: const EdgeInsets.all(6),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withAlpha(220),
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(
+                          isFav ? Icons.favorite : Icons.favorite_border,
+                          size: 18,
+                          color: isFav
+                              ? AppColors.errorRed
+                              : AppColors.warmBrown,
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.all(10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(product.brand,
-                      style: GoogleFonts.poppins(
-                          fontSize: 10,
-                          color: AppColors.gold,
-                          fontWeight: FontWeight.w600)),
-                  const SizedBox(height: 2),
-                  Text(product.name,
-                      style: GoogleFonts.poppins(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w700),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis),
-                  const SizedBox(height: 4),
-                  Row(
-                    children: [
-                      const Icon(Icons.star,
-                          color: AppColors.gold, size: 13),
-                      const SizedBox(width: 3),
-                      Text(product.rating.toString(),
-                          style: GoogleFonts.poppins(
-                              fontSize: 11,
-                              fontWeight: FontWeight.w600)),
-                      Text(' (${product.reviewCount})',
-                          style: GoogleFonts.poppins(
-                              fontSize: 10,
-                              color: AppColors.warmBrown)),
-                    ],
-                  ),
-                  const SizedBox(height: 6),
-                  Text(product.formattedPrice,
-                      style: GoogleFonts.poppins(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w700,
-                          color: AppColors.deepGreen)),
                 ],
+              ),
+            ),
+            // Product info — fills remaining space, never overflows
+            Expanded(
+              flex: 4,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(product.brand,
+                            style: GoogleFonts.poppins(
+                                fontSize: 10,
+                                color: AppColors.gold,
+                                fontWeight: FontWeight.w600)),
+                        const SizedBox(height: 2),
+                        Text(product.name,
+                            style: GoogleFonts.poppins(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w700),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis),
+                      ],
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Row(
+                          children: [
+                            const Icon(Icons.star,
+                                color: AppColors.gold, size: 12),
+                            const SizedBox(width: 3),
+                            Text(product.rating.toString(),
+                                style: GoogleFonts.poppins(
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.w600)),
+                            Text(' (${product.reviewCount})',
+                                style: GoogleFonts.poppins(
+                                    fontSize: 10,
+                                    color: AppColors.warmBrown)),
+                          ],
+                        ),
+                        const SizedBox(height: 3),
+                        Text(product.formattedPrice,
+                            style: GoogleFonts.poppins(
+                                fontSize: 13,
+                                fontWeight: FontWeight.w700,
+                                color: AppColors.deepGreen)),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           ],

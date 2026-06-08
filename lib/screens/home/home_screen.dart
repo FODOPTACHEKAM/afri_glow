@@ -29,13 +29,14 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final provider = context.watch<AppProvider>();
     final user = provider.userProfile;
-    final score = provider.latestAnalysis?.skinScore ?? 75.0;
+    final score = provider.latestAnalysis?.skinScore ?? provider.quizBasedScore;
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final todayIng =
         allIngredients[DateTime.now().weekday % allIngredients.length];
     final isTablet = Responsive.isTablet(context);
     final hp = Responsive.hp(context);
     final imagePath = provider.profileImagePath;
+    final imageUrl = provider.profileImageUrl;
 
     return Scaffold(
       body: CustomScrollView(
@@ -93,34 +94,13 @@ class HomeScreen extends StatelessWidget {
                                     color: AppColors.gold, width: 1.5),
                               ),
                               clipBehavior: Clip.antiAlias,
-                              child: imagePath != null
-                                  ? Image.file(
-                                      File(imagePath),
-                                      fit: BoxFit.cover,
-                                      errorBuilder: (_, __, ___) =>
-                                          Center(
-                                            child: Text(
-                                              user?.name.isNotEmpty == true
-                                                  ? user!.name[0].toUpperCase()
-                                                  : 'A',
-                                              style: GoogleFonts.poppins(
-                                                  color: Colors.white,
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.w700),
-                                            ),
-                                          ),
-                                    )
-                                  : Center(
-                                      child: Text(
-                                        user?.name.isNotEmpty == true
-                                            ? user!.name[0].toUpperCase()
-                                            : 'A',
-                                        style: GoogleFonts.poppins(
-                                            color: Colors.white,
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.w700),
-                                      ),
-                                    ),
+                              child: _AvatarImage(
+                                imageUrl: imageUrl,
+                                imagePath: imagePath,
+                                initial: user?.name.isNotEmpty == true
+                                    ? user!.name[0].toUpperCase()
+                                    : 'A',
+                              ),
                             ),
                             const SizedBox(width: 12),
                             Expanded(
@@ -589,6 +569,39 @@ class _EC {
   final String label;
   final VoidCallback onTap;
   const _EC(this.icon, this.label, this.onTap);
+}
+
+// ── Avatar image — prefers cloud URL, falls back to local file, then initial ─
+
+class _AvatarImage extends StatelessWidget {
+  final String? imageUrl;
+  final String? imagePath;
+  final String initial;
+  const _AvatarImage(
+      {required this.imageUrl,
+      required this.imagePath,
+      required this.initial});
+
+  @override
+  Widget build(BuildContext context) {
+    final fallback = Center(
+      child: Text(initial,
+          style: GoogleFonts.poppins(
+              color: Colors.white,
+              fontSize: 18,
+              fontWeight: FontWeight.w700)),
+    );
+
+    if (imageUrl != null && imageUrl!.isNotEmpty) {
+      return Image.network(imageUrl!,
+          fit: BoxFit.cover, errorBuilder: (_, __, ___) => fallback);
+    }
+    if (imagePath != null) {
+      return Image.file(File(imagePath!),
+          fit: BoxFit.cover, errorBuilder: (_, __, ___) => fallback);
+    }
+    return fallback;
+  }
 }
 
 class _ExploreCard extends StatelessWidget {

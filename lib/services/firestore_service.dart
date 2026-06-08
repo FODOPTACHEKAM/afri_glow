@@ -36,6 +36,13 @@ class FirestoreService {
     return doc.exists ? doc.data() : null;
   }
 
+  static Future<void> saveProfileImageUrl(String uid, String url) async {
+    await _db.collection('users').doc(uid).set(
+      {'profileImageUrl': url, 'updatedAt': FieldValue.serverTimestamp()},
+      SetOptions(merge: true),
+    );
+  }
+
   static Future<void> setOnboarded(String uid) async {
     await _db.collection('users').doc(uid).set(
       {'isOnboarded': true, 'updatedAt': FieldValue.serverTimestamp()},

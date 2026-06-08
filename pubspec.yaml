@@ -27,6 +27,8 @@ dependencies:
   flutter_svg: ^2.0.10+1
   flutter_local_notifications: ^18.0.0
   timezone: ^0.9.4
+  firebase_storage: ^12.3.3
+  shared_preferences: ^2.3.2
 
 dev_dependencies:
   flutter_test:
